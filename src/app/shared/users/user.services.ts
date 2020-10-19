@@ -1,0 +1,11 @@
+import { Injectable } from '@angular/core';
+import { User } from './user.interface';
+
+@Injectable({ providedIn: 'root' })
+export class UserService {
+    public user: User = {
+        id: 1,
+        firstName: 'Jack',
+        lastName: 'Developer'
+    };
+}

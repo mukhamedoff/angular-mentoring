@@ -1,0 +1,13 @@
+@import './global-variables';
+
+@import './styleguide';
+@import './layouts';
+@import './text';
+@import './ui-elements/buttons';
+
+.root {
+    background-color: $bgGray;
+}
+.main {
+    min-height: calc(100vh - #{$heightHeader} - #{$heightFooter});
+}

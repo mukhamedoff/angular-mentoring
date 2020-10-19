@@ -1,0 +1,45 @@
+@import '../scss/main';
+
+.header {
+    background-color: $bgBlack;
+    color: $clrWhite;
+    height: $heightHeader;
+
+    &__logo{
+        &-img{
+            max-width: 158px;
+        }
+    }
+
+    &__wrap{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__menu {
+        display: flex;
+    }
+
+    &__menu-link {
+        font-size: 14px;
+        color: $clrWhite;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+
+        &:hover {
+            .header__menu-link-text {
+                text-decoration: underline;
+            }
+        }
+
+        & + & {
+            margin-left: 24px;
+        }
+        
+        .material-icons {
+            margin-right: 8px;
+        }
+    }
+}

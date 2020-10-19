@@ -1,0 +1,15 @@
+.text {
+    line-height: 18px;
+	letter-spacing: 0;
+	color: $clrBlack;
+	font-size: 14px;
+    text-transform: none;
+    
+    &--small {
+        font-size: 12px;
+    }
+
+    &--white {
+        color: $clrWhite;
+    }
+}
