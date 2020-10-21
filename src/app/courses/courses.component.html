@@ -7,9 +7,10 @@
         <div class="courses__list" *ngIf="courses.length; else coursesEmpty">
             <app-course-item 
                 *ngFor="let course of courses"
+                (deleteCourse)="onDelete($event)"
                 [course]="course"></app-course-item>
                 <div class="courses__more" *ngIf="hasMore">
-                    <button class="btn btn--link">Load more</button>
+                    <button (click)="loadMore()" class="btn btn--link">Load more</button>
                 </div>
         </div>
         <ng-template #coursesEmpty>

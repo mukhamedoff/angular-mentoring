@@ -4,6 +4,7 @@ import { CoursesComponent } from './courses.component';
 import { CourseItemComponent } from './course-item/course-item.component';
 import { SearchComponent } from '../search/search.component';
 import { DurationPipe } from '../duration.pipe';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { DurationPipe } from '../duration.pipe';
     DurationPipe
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   exports: [
     CoursesComponent,

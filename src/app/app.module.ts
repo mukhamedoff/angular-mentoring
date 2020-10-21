@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    CoursesModule
+    CoursesModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
