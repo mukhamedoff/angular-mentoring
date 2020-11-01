@@ -1,3 +1,4 @@
+import { MenuService } from './../shared/menu/menu.services';
 import { UserService } from './../shared/users/user.services';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,30 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  public menu = [];
+  menu = [];
 
-  constructor(public userService: UserService) { }
+  constructor(public userService: UserService, public menuService: MenuService) { }
 
   ngOnInit(): void {
-    if (this.userService.user.id) {
-      this.menu = [{
-        icon: 'person',
-        title: 'User account',
-        href: '/account'
-      }, {
-        icon: 'login',
-        title: 'Log out',
-        href: '/logout'
-      }];
-    } else {
-      this.menu = [{
-        title: 'Log in',
-        href: '/login'
-      }, {
-        title: 'Register',
-        href: '/register'
-      }];
-    }
+    this.menu = this.menuService.getMenu(!!this.userService.user.id);
   }
 
 }

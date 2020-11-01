@@ -9,17 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoursesComponent implements OnInit {
 
-  public courses: Course[];
-  public hasMore = false;
-  public page = 1;
-  public perPage = 2;
+  courses: Course[];
+  hasMore = false;
+  page = 1;
+  displayLimit = 2;
 
   constructor(public coursesService: CoursesService) {
-    this.courses = coursesService.courses.splice(0, this.page * this.perPage);
+    this.courses = this.coursesService.getCourses(this.page, this.displayLimit);
   }
 
   ngOnInit(): void {
-    this.hasMore = this.coursesService.courses.length > 0;
+    this.hasMore = this.coursesService.isNotEmpty();
   }
 
 }
