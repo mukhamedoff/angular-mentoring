@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
+import { AppRoutingModule } from './app-routing.module';
+import { McBreadcrumbsModule } from 'ngx-breadcrumbs';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    CoursesModule
+    CoursesModule,
+    AppRoutingModule,
+    McBreadcrumbsModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

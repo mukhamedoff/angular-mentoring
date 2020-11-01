@@ -5,4 +5,12 @@ import { Component } from '@angular/core';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent {}
+export class SearchComponent {
+
+  public searchText: string;
+
+  onSearch(): void {
+    console.log(`The search text is ${this.searchText ? this.searchText : 'empty'}`);
+  }
+
+}
