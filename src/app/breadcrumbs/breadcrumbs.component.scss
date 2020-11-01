@@ -1,0 +1,19 @@
+@import '../scss/main';
+
+.breadcrumbs {
+    background-color: $bgWhite;
+    color: $clrWhite;
+    height: $breadcrumbsHeader;
+    
+    &__wrap{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .container {
+        height: 100%;
+    }
+}

@@ -1,0 +1,20 @@
+@import '../scss/main';
+
+.search {
+    display: flex;
+
+    &__input {
+        border-radius: 3px;
+        border: 1px solid #CED0DB;
+        background: #FFFFFF;
+        box-sizing: border-box;
+        border-color: #ced0db;
+        border-width: 1px;
+        border-style: solid;
+        height: 36px;
+        width: 240px;
+        margin-right: 12px;
+        box-sizing: border-box;
+        padding: 9px 12px;
+    }
+}

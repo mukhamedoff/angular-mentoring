@@ -1,0 +1,17 @@
+<div class="header">
+    <div class="container h-100p">
+        <div class="header__wrap h-100p">
+            <div class="header__logo">
+                <a href="/" class="header__logo-link">
+                    <img class="header__logo-img" alt="Logo courses" src="/assets/img/logo.jpg">
+                </a>
+            </div>
+            <div class="header__menu">
+                <a [href]="link.href" *ngFor="let link of menu" class="header__menu-link">
+                    <span *ngIf="!!link.icon" class="material-icons">{{ link.icon }}</span>
+                    <span class="header__menu-link-text">{{ link.title }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

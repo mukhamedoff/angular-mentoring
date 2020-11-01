@@ -1,0 +1,22 @@
+<div class="course-item">
+    <div class="course-item__head">
+        <h2 class="course-item__title">{{ course.title }}</h2>
+        <div class="course-item__details">
+            <div class="course-item__duration icon-item">
+                <span class="material-icons">schedule</span>
+                {{ course.duration | duration}}
+            </div>
+            <div class="course-item__creation icon-item">
+                <span class="material-icons">calendar_today</span>
+                {{ course.dateCreation | date:'MM/dd/yyyy' }}
+            </div>
+        </div>
+    </div>
+    <div class="course-item__body">
+        <div class="course-item__description">{{ course.description }}</div>
+        <div class="course-item__actions">
+            <button class="btn course-item__actions--edit icon-item"><span class="material-icons">edit</span>Edit</button>
+            <button class="btn course-item__actions--delete icon-item"><span class="material-icons">delete</span>Delete</button>
+        </div>
+    </div>
+</div>
