@@ -1,12 +1,6 @@
+import { Path as MenuPath } from './../path';
 import { Injectable } from '@angular/core';
 import { Menu } from './menu.interface';
-
-enum MenuPath {
-    ACCOUNT = '/account',
-    LOGOUT = '/logout',
-    LOGIN = '/login',
-    REGISTER = '/register',
-}
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {

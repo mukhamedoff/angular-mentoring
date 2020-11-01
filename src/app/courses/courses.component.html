@@ -10,7 +10,7 @@
                 (deleteCourse)="onDelete($event)"
                 [course]="course"></app-course-item>
                 <div class="courses__more" *ngIf="hasMore">
-                    <button (click)="loadMore()" class="btn btn--link">Load more</button>
+                    <button (click)="onLoadMore()" class="btn btn--link">Load more</button>
                 </div>
         </div>
         <ng-template #coursesEmpty>

@@ -22,7 +22,7 @@ export class CoursesComponent implements OnInit, OnChanges, AfterContentInit, Af
     this.hasMore = this.coursesService.isNotEmpty();
   }
 
-  loadMore(): void {
+  onLoadMore(): void {
     console.log('Load more button was clicked');
   }
 

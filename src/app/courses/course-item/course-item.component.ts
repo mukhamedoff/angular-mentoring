@@ -11,7 +11,7 @@ export class CourseItemComponent {
   @Input() course: Course;
   @Output() deleteCourse: EventEmitter<number> = new EventEmitter<number>();
 
-  delete(): void {
+  onDeleteItem(): void {
     this.deleteCourse.emit(this.course.id);
   }
 
