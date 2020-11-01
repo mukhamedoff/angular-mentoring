@@ -8,6 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { AppRoutingModule } from './app-routing.module';
+import { McBreadcrumbsModule } from 'ngx-breadcrumbs';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     BrowserAnimationsModule,
     CoursesModule,
-    AppRoutingModule
+    AppRoutingModule,
+    McBreadcrumbsModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

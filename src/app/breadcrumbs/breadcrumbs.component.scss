@@ -2,7 +2,7 @@
 
 .breadcrumbs {
     background-color: $bgWhite;
-    color: $clrWhite;
+	color: $clrBlack;
     height: $breadcrumbsHeader;
     
     &__wrap{
@@ -15,5 +15,11 @@
 
     .container {
         height: 100%;
+    }
+
+    .breadcrumb {
+        margin: 0;
+        padding: 0;
+        list-style: none;
     }
 }

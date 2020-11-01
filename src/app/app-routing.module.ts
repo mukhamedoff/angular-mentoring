@@ -5,7 +5,14 @@ import { CoursesComponent } from './courses/courses.component';
 
 const routes: Routes = [
   { path: '',   redirectTo: Path.COURSES, pathMatch: 'full' },
-  { path: RouterPath.COURSES, component: CoursesComponent }
+  {
+    path: RouterPath.COURSES,
+    component: CoursesComponent,
+    data: {
+      breadcrumbs: true,
+      text: 'Courses'
+    }
+  }
 ];
 
 @NgModule({
