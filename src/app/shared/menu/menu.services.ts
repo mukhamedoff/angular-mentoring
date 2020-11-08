@@ -1,25 +1,11 @@
-import { Path as MenuPath } from './../path';
+import { registeredMenu, unRegisteredMenu } from './menu.lists';
 import { Injectable } from '@angular/core';
 import { Menu } from './menu.interface';
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {
-    registeredMenu: Menu[] = [{
-        icon: 'person',
-        title: 'User account',
-        href: MenuPath.ACCOUNT
-    }, {
-        icon: 'login',
-        title: 'Log out',
-        href: MenuPath.LOGOUT
-    }];
-    unRegisteredMenu: Menu[] = [{
-        title: 'Log in',
-        href: MenuPath.LOGIN
-    }, {
-        title: 'Register',
-        href: MenuPath.REGISTER
-    }];
+    registeredMenu: Menu[] = registeredMenu;
+    unRegisteredMenu: Menu[] = unRegisteredMenu;
 
     getMenu(isUserLogin: boolean): Menu[] {
         return isUserLogin ? this.registeredMenu : this.unRegisteredMenu;
