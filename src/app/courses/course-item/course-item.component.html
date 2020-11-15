@@ -1,6 +1,6 @@
-<div class="course-item">
+<div class="course-item" [appCreationdatestatus]="course.dateCreation" [ngClass]="{'course-item--rated': course.topRated}">
     <div class="course-item__head">
-        <h2 class="course-item__title">{{ course.title }}</h2>
+        <h2 class="course-item__title">{{ course.title | uppercase }} <span class="material-icons course-item__rate" *ngIf="course.topRated">star_rate</span></h2>
         <div class="course-item__details">
             <div class="course-item__duration icon-item">
                 <span class="material-icons">schedule</span>

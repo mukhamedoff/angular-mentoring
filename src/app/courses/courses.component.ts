@@ -1,3 +1,5 @@
+import { FilterSearchPipe } from './../filter-search.pipe';
+import { OrderByPipe } from './../order-by.pipe';
 import { CoursesService } from './../shared/courses/courses.service';
 import { Course } from '../shared/courses/course.interface';
 import { Component, OnInit, OnChanges, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy } from '@angular/core';
@@ -14,8 +16,12 @@ export class CoursesComponent implements OnInit, OnChanges, AfterContentInit, Af
   page = 1;
   displayLimit = 2;
 
-  constructor(public coursesService: CoursesService) {
-    this.courses = this.coursesService.getCourses(this.page, this.displayLimit);
+  constructor(
+    public coursesService: CoursesService,
+    public orderByName: OrderByPipe,
+    public filterSearch: FilterSearchPipe
+  ) {
+    this.courses = this.orderByName.transform(this.coursesService.getCourses(this.page, this.displayLimit));
   }
 
   ngOnInit(): void {
@@ -30,28 +36,33 @@ export class CoursesComponent implements OnInit, OnChanges, AfterContentInit, Af
       console.log(`The course ${id} was deleted`);
   }
 
+  onFilter(searchedText: string): void {
+    const filteredCourses = this.filterSearch.transform(this.coursesService.getCourses(this.page, this.displayLimit), searchedText);
+    this.courses = this.orderByName.transform(filteredCourses);
+  }
+
   ngOnChanges(): void {
-    console.log('ngOnChanges');
+    // console.log('ngOnChanges');
   }
 
   ngAfterContentInit(): void {
-    console.log('ngAfterContentInit');
+    // console.log('ngAfterContentInit');
   }
 
   ngAfterContentChecked(): void {
-    console.log('ngAfterContentChecked');
+    // console.log('ngAfterContentChecked');
   }
 
   ngAfterViewInit(): void {
-    console.log('ngAfterViewInit');
+    // console.log('ngAfterViewInit');
   }
 
   ngAfterViewChecked(): void {
-    console.log('ngAfterViewChecked');
+    // console.log('ngAfterViewChecked');
   }
 
   ngOnDestroy(): void {
-    console.log('ngOnDestroy');
+    // console.log('ngOnDestroy');
   }
 
 }

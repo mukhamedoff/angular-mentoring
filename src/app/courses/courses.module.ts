@@ -5,17 +5,26 @@ import { CourseItemComponent } from './course-item/course-item.component';
 import { SearchComponent } from '../search/search.component';
 import { DurationPipe } from '../duration.pipe';
 import { FormsModule } from '@angular/forms';
+import { OrderByPipe } from '../order-by.pipe';
+import { FilterSearchPipe } from '../filter-search.pipe';
+
+import { CreationdatestatusDirective } from './../creationdatestatus.directive';
 
 @NgModule({
   declarations: [
     CoursesComponent,
     CourseItemComponent,
     SearchComponent,
-    DurationPipe
+    DurationPipe,
+    CreationdatestatusDirective
   ],
   imports: [
     CommonModule,
     FormsModule
+  ],
+  providers: [
+    OrderByPipe,
+    FilterSearchPipe
   ],
   exports: [
     CoursesComponent,

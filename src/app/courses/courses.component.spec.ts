@@ -1,3 +1,5 @@
+import { FilterSearchPipe } from './../filter-search.pipe';
+import { OrderByPipe } from './../order-by.pipe';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CoursesComponent } from './courses.component';
@@ -8,7 +10,8 @@ describe('CoursesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CoursesComponent ]
+      declarations: [ CoursesComponent ],
+      providers: [OrderByPipe, FilterSearchPipe]
     })
     .compileComponents();
   });

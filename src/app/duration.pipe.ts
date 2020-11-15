@@ -7,6 +7,6 @@ export class DurationPipe implements PipeTransform {
     transform(value: number, args?: any): string {
         const h = Math.floor(value / 60);
         const restMin = value - h * 60;
-        return `${h}h ${restMin}min`;
+        return value < 60 ? `${value}min` : `${h}h ${restMin}min`;
     }
 }
