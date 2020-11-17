@@ -22,4 +22,10 @@ describe('SearchComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should search on click', () => {
+    const spyDelete = spyOn(component, 'onSearch');
+    component.onSearch();
+    expect(spyDelete).toHaveBeenCalled();
+  });
 });

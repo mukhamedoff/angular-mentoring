@@ -8,4 +8,8 @@ export class UserService {
         firstName: 'Jack',
         lastName: 'Developer'
     };
+
+    getUser(): User {
+        return this.user;
+    }
 }
