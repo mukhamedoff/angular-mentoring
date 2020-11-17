@@ -1,8 +1,7 @@
-import { Menu } from './../shared/menu/menu.interface';
 import { registeredMenu, unRegisteredMenu } from './../shared/menu/menu.lists';
 import { MenuService } from './../shared/menu/menu.services';
-import { User } from './../shared/users/user.interface';
-import { userMock } from './../shared/users/user.mocked';
+import { userServiceMock } from './../shared/users/user.service.mock';
+import { menuServiceMock } from './../shared/menu/menu.service.mock';
 import { UserService } from './../shared/users/user.services';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -11,22 +10,12 @@ import { HeaderComponent } from './header.component';
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
-  let userServiceStub: Partial<UserService>;
-  let menuServiceStub: Partial<MenuService>;
+  const userServiceStub: Partial<UserService> = userServiceMock;
+  const menuServiceStub: Partial<MenuService> = menuServiceMock;
   let userService: UserService;
   let menuService: MenuService;
 
   beforeEach(async () => {
-    userServiceStub = {
-      user: JSON.parse(JSON.stringify(userMock))
-    };
-    menuServiceStub = {
-      registeredMenu,
-      unRegisteredMenu,
-      getMenu(isUserLogin: boolean): Menu[] {
-        return isUserLogin ? this.registeredMenu : this.unRegisteredMenu;
-      }
-    };
     await TestBed.configureTestingModule({
       declarations: [ HeaderComponent ],
       providers: [

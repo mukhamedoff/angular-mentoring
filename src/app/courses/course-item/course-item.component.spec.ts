@@ -1,13 +1,13 @@
 import { Course } from './../../shared/courses/course.interface';
 import { DebugElement, Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 
 import { CourseItemComponent } from './course-item.component';
 import { DurationPipe } from '../../duration.pipe';
 import { DatePipe } from '@angular/common';
 
-import { click } from './../../shared/helpers/spec/clickEvent';
+import { triggerClickEvent } from './../../shared/helpers/spec/clickEvent';
+import { getDebugElement } from './../../shared/helpers/spec/debugElement';
 
 // mock the course supplied by the parent component
 const expectedCourse: Course = {
@@ -20,12 +20,12 @@ const expectedCourse: Course = {
 @Component({
   template: `
     <app-course-item
-      (deleteCourse)="onDelete($event)"
+      (deleteCourse)="onDeleteCourse($event)"
       [course]="course"></app-course-item>`
 })
 class TestHostComponent {
   course: Course = expectedCourse;
-  onDelete(id: number): void {}
+  onDeleteCourse(id: number): void {}
 }
 
 describe('CourseItemComponent', () => {
@@ -42,7 +42,7 @@ describe('CourseItemComponent', () => {
     component = fixture.componentInstance;
 
     // find the course's DebugElement and element
-    courseDe = fixture.debugElement.query(By.css('.course-item'));
+    courseDe = getDebugElement(fixture, '.course-item');
     courseEl = courseDe.nativeElement;
 
     // simulate the parent setting the input property with that course
@@ -58,20 +58,20 @@ describe('CourseItemComponent', () => {
 
   it('should display course title', () => {
     const expectedCourseTitle = expectedCourse.title;
-    const courseTitle = fixture.debugElement.query(By.css('.course-item__title'));
+    const courseTitle = getDebugElement(fixture, '.course-item__title');
     expect(courseTitle.nativeElement.textContent).toContain(expectedCourseTitle);
   });
 
   it('should display course description', () => {
     const expectedCourseDescription = expectedCourse.description;
-    const courseDescription = fixture.debugElement.query(By.css('.course-item__description'));
+    const courseDescription = getDebugElement(fixture, '.course-item__description');
     expect(courseDescription.nativeElement.textContent).toContain(expectedCourseDescription);
   });
 
   it('should display course date in format "MM/dd/yyyy"', () => {
     const expectedCourseDateCreation = expectedCourse.dateCreation;
     const stubIconText = 'calendar_today';
-    const courseDateCreation = fixture.debugElement.query(By.css('.course-item__creation'));
+    const courseDateCreation = getDebugElement(fixture, '.course-item__creation');
     const pipeDate = new DatePipe('en');
 
     fixture.detectChanges();
@@ -86,8 +86,8 @@ describe('CourseItemComponent', () => {
 
   it('should emit on click', () => {
     const emitter = spyOn(component.deleteCourse, 'emit');
-    const courseDeleteButton = fixture.debugElement.query(By.css('.course-item__actions--delete'));
-    click(courseDeleteButton);
+    const courseDeleteButton = getDebugElement(fixture, '.course-item__actions--delete');
+    triggerClickEvent(courseDeleteButton);
     expect(emitter).toHaveBeenCalled();
     expect(emitter).toHaveBeenCalledWith(expectedCourse.id);
   });
@@ -107,8 +107,8 @@ describe('TestHostComponent', () => {
   }));
 
   it('should delete on click', () => {
-    const spyDelete = spyOn(testHost, 'onDelete');
-    click(courseEl);
+    const spyDelete = spyOn(testHost, 'onDeleteCourse');
+    triggerClickEvent(courseEl);
     expect(spyDelete).toHaveBeenCalled();
     expect(spyDelete).toHaveBeenCalledWith(expectedCourse.id);
   });

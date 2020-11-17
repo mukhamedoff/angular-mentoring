@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Course } from './course.interface';
-import { mockedCourses } from './courses.mocked';
+import { mockedCourses } from './courses.mock';
 
 @Injectable({ providedIn: 'root' })
 export class CoursesService {

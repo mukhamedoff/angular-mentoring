@@ -1,6 +1,6 @@
 import { User } from './user.interface';
 
-export const userMock: User = {
+export const DEFAULT_USER: User = {
     id: 1,
     firstName: 'Jack',
     lastName: 'Developer'

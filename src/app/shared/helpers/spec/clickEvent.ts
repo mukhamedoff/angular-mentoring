@@ -6,7 +6,7 @@ export const ButtonClickEvents = {
 };
 
 /** Simulate element click. Defaults to mouse left-button click event. */
-export function click(el: DebugElement | HTMLElement, eventObj: any = ButtonClickEvents.left): void {
+export function triggerClickEvent(el: DebugElement | HTMLElement, eventObj: any = ButtonClickEvents.left): void {
     if (el instanceof HTMLElement) {
         el.click();
     } else {
