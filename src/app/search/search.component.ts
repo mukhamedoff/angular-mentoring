@@ -8,11 +8,13 @@ import { Component, Output, EventEmitter } from '@angular/core';
 export class SearchComponent {
 
   public searchText: string;
-  @Output() filterCourses: EventEmitter<string> = new EventEmitter<string>();
+  @Output() searchSubmit: EventEmitter<string> = new EventEmitter<string>();
 
   onSearch(): void {
-    this.filterCourses.emit(this.searchText || '');
-    !this.searchText && console.log(`The search text is empty`);
+    if (!this.searchText) {
+      return;
+    }
+    this.searchSubmit.emit(this.searchText || '');
   }
 
 }

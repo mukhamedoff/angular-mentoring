@@ -1,6 +1,6 @@
 <div class="courses">
     <div class="container">
-        <app-search (filterCourses)="onFilter($event)"></app-search>
+        <app-search (searchSubmit)="onSearchSubmit($event)"></app-search>
         <div class="courses__add-new">
             <button class="btn btn--big icon-item"><span class="material-icons">add_circle_outline</span> Add course</button>
         </div>

@@ -2,14 +2,14 @@ import { FilterSearchPipe } from './../filter-search.pipe';
 import { OrderByPipe } from './../order-by.pipe';
 import { CoursesService } from './../shared/courses/courses.service';
 import { Course } from '../shared/courses/course.interface';
-import { Component, OnInit, OnChanges, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss']
 })
-export class CoursesComponent implements OnInit, OnChanges, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
+export class CoursesComponent implements OnInit {
 
   courses: Course[];
   hasMore = false;
@@ -21,7 +21,7 @@ export class CoursesComponent implements OnInit, OnChanges, AfterContentInit, Af
     public orderByName: OrderByPipe,
     public filterSearch: FilterSearchPipe
   ) {
-    this.courses = this.orderByName.transform(this.coursesService.getCourses(this.page, this.displayLimit));
+    this.courses = this.coursesService.getOrderedCourse(this.page, this.displayLimit);
   }
 
   ngOnInit(): void {
@@ -33,36 +33,12 @@ export class CoursesComponent implements OnInit, OnChanges, AfterContentInit, Af
   }
 
   onDelete(id: number): void {
-      console.log(`The course ${id} was deleted`);
+    console.log(`The course ${id} was deleted`);
   }
 
-  onFilter(searchedText: string): void {
+  onSearchSubmit(searchedText: string): void {
     const filteredCourses = this.filterSearch.transform(this.coursesService.getCourses(this.page, this.displayLimit), searchedText);
     this.courses = this.orderByName.transform(filteredCourses);
-  }
-
-  ngOnChanges(): void {
-    // console.log('ngOnChanges');
-  }
-
-  ngAfterContentInit(): void {
-    // console.log('ngAfterContentInit');
-  }
-
-  ngAfterContentChecked(): void {
-    // console.log('ngAfterContentChecked');
-  }
-
-  ngAfterViewInit(): void {
-    // console.log('ngAfterViewInit');
-  }
-
-  ngAfterViewChecked(): void {
-    // console.log('ngAfterViewChecked');
-  }
-
-  ngOnDestroy(): void {
-    // console.log('ngOnDestroy');
   }
 
 }
