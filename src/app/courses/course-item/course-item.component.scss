@@ -8,6 +8,10 @@
     padding: 24px;
     margin-bottom: 24px;
 
+    &--rated{
+        background-color: #ffcb001c;
+    }
+
     &__head {
         display: flex;
         margin-bottom: 10px;
@@ -19,6 +23,10 @@
         text-transform: none;
         font-weight: 600;
         flex: 1;
+    }
+
+    &__rate{
+        color: #ffcb00;
     }
 
     &__details {

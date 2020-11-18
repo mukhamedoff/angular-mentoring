@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-search',
@@ -8,9 +8,13 @@ import { Component } from '@angular/core';
 export class SearchComponent {
 
   public searchText: string;
+  @Output() searchSubmit: EventEmitter<string> = new EventEmitter<string>();
 
   onSearch(): void {
-    console.log(`The search text is ${this.searchText ? this.searchText : 'empty'}`);
+    if (!this.searchText) {
+      return;
+    }
+    this.searchSubmit.emit(this.searchText || '');
   }
 
 }

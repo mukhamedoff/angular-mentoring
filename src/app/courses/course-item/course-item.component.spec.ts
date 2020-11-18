@@ -1,3 +1,4 @@
+import { OrderByPipe } from './../../order-by.pipe';
 import { Course } from './../../shared/courses/course.interface';
 import { DebugElement, Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
@@ -36,7 +37,7 @@ describe('CourseItemComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseItemComponent, DurationPipe ]
+      declarations: [ CourseItemComponent, DurationPipe, OrderByPipe ]
     });
     fixture = TestBed.createComponent(CourseItemComponent);
     component = fixture.componentInstance;
@@ -57,7 +58,7 @@ describe('CourseItemComponent', () => {
   });
 
   it('should display course title', () => {
-    const expectedCourseTitle = expectedCourse.title;
+    const expectedCourseTitle = expectedCourse.title.toUpperCase();
     const courseTitle = getDebugElement(fixture, '.course-item__title');
     expect(courseTitle.nativeElement.textContent).toContain(expectedCourseTitle);
   });
@@ -99,7 +100,7 @@ describe('TestHostComponent', () => {
   let courseEl: HTMLElement;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({declarations: [CourseItemComponent, TestHostComponent, DurationPipe]});
+    TestBed.configureTestingModule({declarations: [CourseItemComponent, TestHostComponent, DurationPipe, OrderByPipe]});
     fixture = TestBed.createComponent(TestHostComponent);
     testHost = fixture.componentInstance;
     courseEl = fixture.nativeElement.querySelector('.course-item__actions--delete');
