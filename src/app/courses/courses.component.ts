@@ -12,7 +12,9 @@ import { Component, OnInit } from '@angular/core';
 export class CoursesComponent implements OnInit {
 
   courses: Course[];
+  removingCourse: Course;
   hasMore = false;
+  showRemoveCourseModal = false;
   page = 1;
   displayLimit = 2;
 
@@ -33,11 +35,21 @@ export class CoursesComponent implements OnInit {
   }
 
   onDelete(id: number): void {
-    console.log(`The course ${id} was deleted`);
+    if (this.showRemoveCourseModal) {
+      this.courses = this.coursesService.removeCourse(id);
+      this.showRemoveCourseModal = false;
+    } else {
+      this.removingCourse = this.coursesService.getItemById(id);
+      this.showRemoveCourseModal = true;
+    }
+  }
+
+  onCancel(): void {
+    this.showRemoveCourseModal = false;
   }
 
   onSearchSubmit(searchedText: string): void {
-    const filteredCourses = this.filterSearch.transform(this.coursesService.getCourses(this.page, this.displayLimit), searchedText);
+    const filteredCourses = this.filterSearch.transform(this.coursesService.getList(this.page, this.displayLimit), searchedText);
     this.courses = this.orderByName.transform(filteredCourses);
   }
 

@@ -9,12 +9,41 @@ export class CoursesService {
 
     constructor(public orderByName: OrderByPipe){}
 
-    getCourses(page: number, displayLimit: number): Course[] {
+    getList(page: number, displayLimit: number): Course[] {
         return this.courses.slice(0, page * displayLimit);
     }
 
     getOrderedCourse(page: number, displayLimit: number): Course[] {
-        return this.orderByName.transform(this.getCourses(page, displayLimit));
+        return this.orderByName.transform(this.getList(page, displayLimit));
+    }
+
+    createCourse(title: string, duration: number, description: string, topRated: boolean): Course {
+        return {
+            id: Math.floor(Math.random() * 1000) + 1,
+            title,
+            dateCreation: new Date(),
+            duration,
+            description,
+            topRated
+        };
+    }
+
+    updateCourse(id: number, title: string, duration: number, description: string, topRated: boolean): Course {
+        const course: Course = this.getItemById(id);
+        course.title = title;
+        course.duration = duration;
+        course.description = description;
+        course.topRated = topRated;
+        return course;
+    }
+
+    removeCourse(id: number): Course[] {
+        return this.courses = this.courses.filter(course => course.id !== id);
+    }
+
+    getItemById(id: number): Course {
+        const filtered = this.courses.filter(course => course.id === id);
+        return filtered.length && filtered[0];
     }
 
     isNotEmpty(): boolean {

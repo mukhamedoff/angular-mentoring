@@ -1,9 +1,11 @@
 @import './global-variables';
+@import './mixins';
 
 @import './styleguide';
 @import './layouts';
 @import './text';
 @import './ui-elements/buttons';
+@import './ui-elements/form';
 
 .root {
     background-color: $bgGray;

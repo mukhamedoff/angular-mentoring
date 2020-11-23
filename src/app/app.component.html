@@ -1,8 +1,13 @@
 <div class="root">
   <app-header></app-header>
   <div class="main">
-    <app-breadcrumbs></app-breadcrumbs>
-    <router-outlet></router-outlet>
+    <div *ngIf="authService.loginStatusObs | async; else loginPage">
+      <app-breadcrumbs></app-breadcrumbs>
+      <router-outlet></router-outlet>
+    </div>
+    <ng-template #loginPage>
+      <app-login-page></app-login-page>
+    </ng-template>
   </div>
   <app-footer></app-footer>
 </div>

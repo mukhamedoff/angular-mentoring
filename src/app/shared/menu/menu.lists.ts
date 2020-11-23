@@ -8,12 +8,14 @@ export const registeredMenu: Menu[] = [{
 }, {
     icon: 'login',
     title: 'Log out',
-    href: MenuPath.LOGOUT
+    href: MenuPath.LOGOUT,
+    action: 'logout'
 }];
 
 export const unRegisteredMenu: Menu[] = [{
     title: 'Log in',
-    href: MenuPath.LOGIN
+    href: MenuPath.LOGIN,
+    action: 'login'
 }, {
     title: 'Register',
     href: MenuPath.REGISTER

@@ -16,11 +16,11 @@ describe('CoursesService', () => {
     });
 
     it('#getCourses should return two first courses', () => {
-        expect(coursesService.getCourses(page, displayLimit)).toEqual([mockedCourses[0], mockedCourses[1]]);
+        expect(coursesService.getList(page, displayLimit)).toEqual([mockedCourses[0], mockedCourses[1]]);
     });
 
     it('#getCourses length should to be equal display limit', () => {
-        expect(coursesService.getCourses(page, displayLimit).length).toBe(displayLimit);
+        expect(coursesService.getList(page, displayLimit).length).toBe(displayLimit);
     });
 
     it('#isNotEmpty should return true if courses is not empty', () => {

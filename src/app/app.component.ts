@@ -1,3 +1,4 @@
+import { AuthService } from './shared/auth/auth.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'my-app';
+  isAuth: boolean;
+
+  constructor(public authService: AuthService){
+    this.authService.loginStatusObs.subscribe(isAuth => this.isAuth = isAuth);
+  }
 }
