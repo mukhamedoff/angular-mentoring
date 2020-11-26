@@ -1,3 +1,4 @@
+import { AddCourseComponent } from './courses/add-course/add-course.component';
 import { Path, Routes as RouterPath } from './shared/path';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -7,11 +8,24 @@ const routes: Routes = [
   { path: '',   redirectTo: Path.COURSES, pathMatch: 'full' },
   {
     path: RouterPath.COURSES,
-    component: CoursesComponent,
     data: {
       breadcrumbs: true,
       text: 'Courses'
-    }
+    },
+    children: [
+      {
+        path: '',
+        component: CoursesComponent
+      },
+      {
+        path: 'add-course',
+        component: AddCourseComponent,
+        data: {
+          breadcrumbs: true,
+          text: 'New course'
+        }
+      }
+    ]
   }
 ];
 

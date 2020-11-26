@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoursesComponent } from './courses.component';
@@ -9,6 +10,7 @@ import { OrderByPipe } from '../order-by.pipe';
 import { FilterSearchPipe } from '../filter-search.pipe';
 import { CourseRemovingComponent } from './../modals/courses/course-removing/course-removing.component';
 import { CreationdatestatusDirective } from './../creationdatestatus.directive';
+import { AddCourseComponent } from './add-course/add-course.component';
 
 @NgModule({
   declarations: [
@@ -17,11 +19,13 @@ import { CreationdatestatusDirective } from './../creationdatestatus.directive';
     CourseRemovingComponent,
     SearchComponent,
     DurationPipe,
-    CreationdatestatusDirective
+    CreationdatestatusDirective,
+    AddCourseComponent
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ],
   providers: [
     OrderByPipe,
