@@ -22,6 +22,6 @@
 <app-course-removing 
     *ngIf="showRemoveCourseModal"
     [removingCourse]="removingCourse"
-    (confirmDeleteCourse)="onDelete($event)"
-    (cancelDeleteCourse)="onCancel()">
+    (confirmDelete)="onDelete()"
+    (cancelDelete)="onCancel()">
 </app-course-removing>

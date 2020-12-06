@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { AuthService } from './shared/auth/auth.service';
 import { Component } from '@angular/core';
 
@@ -8,9 +9,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'my-app';
-  isAuth: boolean;
+  isLoggedIn$: Observable<boolean> = this.authService.loginStatusObs;
 
-  constructor(public authService: AuthService){
-    this.authService.loginStatusObs.subscribe(isAuth => this.isAuth = isAuth);
-  }
+  constructor(public authService: AuthService){}
 }

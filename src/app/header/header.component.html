@@ -6,7 +6,7 @@
                     <img class="header__logo-img" alt="Logo courses" src="/assets/img/logo.jpg">
                 </a>
             </div>
-            <div class="header__menu" *ngIf="authService.loginStatusObs | async">
+            <div class="header__menu" *ngIf="isLoggedIn$ | async">
                 <a
                     [href]="link.href"
                     (click)="onAction($event, link.action)"

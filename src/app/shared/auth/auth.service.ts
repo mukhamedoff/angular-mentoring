@@ -1,6 +1,7 @@
 import { User } from '../users/user.interface';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { BrowserStorageService } from '../storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,22 +10,26 @@ export class AuthService {
   private loginStatusSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public loginStatusObs: Observable<boolean> = this.loginStatusSubject.asObservable();
 
+  constructor(
+    private storageService: BrowserStorageService,
+  ) { }
+
   login(user: User, token: string): void {
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('token', token);
+    if (user) { this.storageService.set('user', JSON.stringify(user)); }
+    if (token) { this.storageService.set('token', token); }
   }
 
   logout(): void {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    this.storageService.remove('user');
+    this.storageService.remove('token');
   }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+    return !!this.storageService.get('token');
   }
 
   getUserInfo(): User | object {
-    return JSON.parse(localStorage.getItem('user'));
+    return JSON.parse(this.storageService.get('user'));
   }
 
   setLoginStatus(value: boolean): void {

@@ -13,9 +13,7 @@ export class LoginPageComponent {
 
   constructor(public authService: AuthService, public userService: UserService) { }
 
-  onLogin(event): void {
-    event.preventDefault();
+  onLogin(): void {
     this.authService.login(this.userService.getUser(), 'qwe123asd234');
-    console.log(localStorage)
   }
 }
