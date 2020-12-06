@@ -5,17 +5,12 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './add-course.component.html',
   styleUrls: ['./add-course.component.scss']
 })
-export class AddCourseComponent implements OnInit {
+export class AddCourseComponent {
 
   title: string;
   description: string;
   duration: string;
   date: string;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   onCancel(event): void {
     console.log('cancel');
@@ -29,5 +24,4 @@ export class AddCourseComponent implements OnInit {
       date: this.date
     });
   }
-
 }
