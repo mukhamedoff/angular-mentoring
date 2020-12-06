@@ -35,5 +35,11 @@
         color: #474A59;
         font-size: 14px;
         padding: 9px 12px;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+
+        &--textarea {
+            height: 108px;
+            resize: none;
+        }
     }
 }

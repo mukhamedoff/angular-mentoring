@@ -13,3 +13,39 @@
 .main {
     min-height: calc(100vh - #{$heightHeader} - #{$heightFooter});
 }
+
+.breadcrumbs {
+    .breadcrumb {
+        display: flex;
+
+        .breadcrumb-item {
+            margin-left: 5px;
+            display: flex;
+            align-items: center;
+
+            a {
+                color: $clrGray;
+                text-decoration: none;
+
+                &:hover {
+                    color: $clrBlack;
+                }
+            }
+
+            &:before {
+                content: '/';
+                display: inline-block;
+                color: $bgBlue;
+                margin-right: 5px;
+            }
+
+            &:nth-child(1) {
+                margin-left: 0;
+
+                &:before {
+                    display: none;
+                }
+            }
+        }
+    }
+}

@@ -1,8 +1,9 @@
+<router-outlet></router-outlet>
 <div class="courses">
     <div class="container">
         <app-search (searchSubmit)="onSearchSubmit($event)"></app-search>
         <div class="courses__add-new">
-            <button class="btn btn--big icon-item"><span class="material-icons">add_circle_outline</span> Add course</button>
+            <a routerLink="add-course" class="btn btn--big icon-item"><span class="material-icons">add_circle_outline</span> Add course</a>
         </div>
         <div class="courses__list" *ngIf="courses.length; else coursesEmpty">
             <app-course-item 

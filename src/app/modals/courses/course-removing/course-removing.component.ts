@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Course } from 'src/app/shared/courses/course.interface';
 
 @Component({
   selector: 'app-course-removing',
   templateUrl: './course-removing.component.html',
-  styleUrls: ['./course-removing.component.scss']
+  styleUrls: ['./course-removing.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseDeleteModalComponent {
 
