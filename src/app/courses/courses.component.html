@@ -18,3 +18,9 @@
         </ng-template>
     </div>
 </div>
+<app-course-removing 
+    *ngIf="showRemoveCourseModal"
+    [removingCourse]="removingCourse"
+    (confirmDelete)="onDelete()"
+    (cancelDelete)="onCancel()">
+</app-course-removing>

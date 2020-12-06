@@ -7,13 +7,14 @@ import { DurationPipe } from '../duration.pipe';
 import { FormsModule } from '@angular/forms';
 import { OrderByPipe } from '../order-by.pipe';
 import { FilterSearchPipe } from '../filter-search.pipe';
-
+import { CourseDeleteModalComponent } from './../modals/courses/course-removing/course-removing.component';
 import { CreationdatestatusDirective } from './../creationdatestatus.directive';
 
 @NgModule({
   declarations: [
     CoursesComponent,
     CourseItemComponent,
+    CourseDeleteModalComponent,
     SearchComponent,
     DurationPipe,
     CreationdatestatusDirective
@@ -29,6 +30,7 @@ import { CreationdatestatusDirective } from './../creationdatestatus.directive';
   exports: [
     CoursesComponent,
     CourseItemComponent,
+    CourseDeleteModalComponent,
     SearchComponent
   ]
 })
