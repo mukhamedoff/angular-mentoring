@@ -16,8 +16,7 @@ export class LoginPageComponent {
 
   constructor(public authService: AuthService, public userService: UserService, private router: Router) { }
 
-  onLogin(event): void {
-    event.preventDefault();
+  onLogin(): void {
     if (this.email !== '' || this.password !== '') {
       const user = this.userService.findUserInLogin(this.email, this.password);
       if (user) {

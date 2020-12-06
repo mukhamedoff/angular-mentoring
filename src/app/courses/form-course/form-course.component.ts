@@ -1,3 +1,4 @@
+import { CoursesService } from './../../shared/courses/courses.service';
 import { DatePipe } from '@angular/common';
 import { Course } from './../../shared/courses/course.interface';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
@@ -19,7 +20,7 @@ export class FormCourseComponent implements OnInit {
   duration: number;
   dateCreation: string;
 
-  constructor(private datePipe: DatePipe) { }
+  constructor(private datePipe: DatePipe, private courseService: CoursesService) { }
 
   ngOnInit(): void {
     if (this.course) {
@@ -37,7 +38,7 @@ export class FormCourseComponent implements OnInit {
 
   onSave(event): void {
     this.save.emit({
-      id: this.course.id,
+      id: this.course?.id || (this.courseService.getCoursesLength() + 1),
       title: this.title,
       description: this.description,
       duration: this.duration,

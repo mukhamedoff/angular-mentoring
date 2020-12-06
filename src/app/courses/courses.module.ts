@@ -8,19 +8,17 @@ import { DurationPipe } from '../duration.pipe';
 import { FormsModule } from '@angular/forms';
 import { OrderByPipe } from '../order-by.pipe';
 import { FilterSearchPipe } from '../filter-search.pipe';
-import { CourseRemovingComponent } from './../modals/courses/course-removing/course-removing.component';
+import { CourseDeleteModalComponent } from './../modals/courses/course-removing/course-removing.component';
 import { CreationdatestatusDirective } from './../creationdatestatus.directive';
-import { AddCourseComponent } from './add-course/add-course.component';
 
 @NgModule({
   declarations: [
     CoursesComponent,
     CourseItemComponent,
-    CourseRemovingComponent,
+    CourseDeleteModalComponent,
     SearchComponent,
     DurationPipe,
-    CreationdatestatusDirective,
-    AddCourseComponent
+    CreationdatestatusDirective
   ],
   imports: [
     CommonModule,
@@ -34,7 +32,7 @@ import { AddCourseComponent } from './add-course/add-course.component';
   exports: [
     CoursesComponent,
     CourseItemComponent,
-    CourseRemovingComponent,
+    CourseDeleteModalComponent,
     SearchComponent
   ]
 })

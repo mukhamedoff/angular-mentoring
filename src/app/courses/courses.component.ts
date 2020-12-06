@@ -36,7 +36,7 @@ export class CoursesComponent implements OnInit {
 
   onDelete(id: number): void {
     if (this.showRemoveCourseModal) {
-      this.courses = this.coursesService.removeCourse(id);
+      this.courses = this.coursesService.removeCourse(this.removingCourse.id);
       this.showRemoveCourseModal = false;
     } else {
       this.removingCourse = this.coursesService.getItemById(id);

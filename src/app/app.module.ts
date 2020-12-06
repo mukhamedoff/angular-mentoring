@@ -1,5 +1,5 @@
+import { AddCourseModule } from './courses/add-course/add-course.module';
 import { AuthGuardService } from './shared/auth/auth-guard.service';
-import { FormCourseModule } from './courses/form-course/form-course.module';
 import { CourseModule } from './courses/course/course.module';
 import { LoginPageModule } from './login-page/login-page.module';
 import { FirstLetterCasePipe } from './first-letter-case.pipe';
@@ -32,6 +32,7 @@ import { MainComponent } from './main/main.component';
     CourseModule,
     AppRoutingModule,
     LoginPageModule,
+    AddCourseModule,
     McBreadcrumbsModule.forRoot()
   ],
   providers: [FirstLetterCasePipe, AuthGuardService],
