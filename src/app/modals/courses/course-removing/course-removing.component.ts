@@ -6,17 +6,17 @@ import { Course } from 'src/app/shared/courses/course.interface';
   templateUrl: './course-removing.component.html',
   styleUrls: ['./course-removing.component.scss']
 })
-export class CourseRemovingComponent {
+export class CourseDeleteModalComponent {
 
   @Input() removingCourse: Course;
-  @Output() confirmDeleteCourse: EventEmitter<number> = new EventEmitter<number>();
-  @Output() cancelDeleteCourse: EventEmitter<number> = new EventEmitter<number>();
+  @Output() confirmDelete: EventEmitter<number> = new EventEmitter<number>();
+  @Output() cancelDelete: EventEmitter<number> = new EventEmitter<number>();
 
-  onConfirmDeleteCourse(): void {
-    this.confirmDeleteCourse.emit(this.removingCourse.id);
+  onConfirmDelete(): void {
+    this.confirmDelete.emit();
   }
 
   onCancel(): void {
-    this.cancelDeleteCourse.emit();
+    this.cancelDelete.emit();
   }
 }

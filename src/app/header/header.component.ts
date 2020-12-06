@@ -1,8 +1,8 @@
 import { FirstLetterCasePipe } from './../first-letter-case.pipe';
 import { AuthService } from '../shared/auth/auth.service';
 import { MenuService } from './../shared/menu/menu.services';
-import { UserService } from './../shared/users/user.services';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -12,15 +12,12 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   menu = [];
-  isAuth: boolean;
+  isLoggedIn$: Observable<boolean> = this.authService.loginStatusObs;
 
   constructor(
-    public userService: UserService,
     public menuService: MenuService,
     public firstLetterCasePipe: FirstLetterCasePipe,
-    public authService: AuthService) {
-      this.authService.loginStatusObs.subscribe(isAuth => this.isAuth = isAuth);
-    }
+    public authService: AuthService) {}
 
   ngOnInit(): void {
     this.menu = this.menuService.getMenu(this.authService.isAuthenticated());
