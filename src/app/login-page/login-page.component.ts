@@ -16,14 +16,22 @@ export class LoginPageComponent {
 
   constructor(public authService: AuthService, public userService: UserService, private router: Router) { }
 
-  onLogin(): void {
+  async onLogin(): Promise<void> {
     if (this.email !== '' || this.password !== '') {
-      const user = this.userService.findUserInLogin(this.email, this.password);
-      if (user) {
-        this.authService.login(user, this.password);
-        this.router.navigateByUrl('/courses');
-        this.authService.setLoginStatus(true);
-      }
+      const _this = this;
+      this.authService.login(this.email, this.password)
+        .subscribe({
+          next(data: any) {
+            if (data?.token) {
+              _this.authService.saveToken(data.token);
+              _this.authService.setLoginStatus(true);
+              _this.router.navigateByUrl('/courses');
+            }
+          },
+          error(msg) {
+            console.log('Error is getting: ', msg);
+          }
+        });
     }
   }
 }

@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoursesComponent implements OnInit {
 
-  courses: Course[];
+  courses: Course[] = [];
   removingCourse: Course;
   hasMore = false;
   showRemoveCourseModal = false;
@@ -23,7 +23,18 @@ export class CoursesComponent implements OnInit {
     public orderByName: OrderByPipe,
     public filterSearch: FilterSearchPipe
   ) {
-    this.courses = this.coursesService.getOrderedCourse(this.page, this.displayLimit);
+    var _this = this;
+    this.coursesService.getCoursesFromServer().subscribe({
+      next(data: any) {
+        if (data) {
+          _this.coursesService.setList(data);
+          _this.courses = _this.coursesService.getOrderedCourse(_this.page, _this.displayLimit);
+        }
+      },
+      error(msg) {
+        console.log('Error is getting course fetching: ', msg);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -31,12 +42,24 @@ export class CoursesComponent implements OnInit {
   }
 
   onLoadMore(): void {
-    console.log('Load more button was clicked');
+    this.courses = this.coursesService.getOrderedCourse(++this.page, this.displayLimit);
   }
 
   onDelete(id: number): void {
     if (this.showRemoveCourseModal) {
-      this.courses = this.coursesService.removeCourse(this.removingCourse.id);
+      var _this = this;
+      this.coursesService.removeServerCourse(this.removingCourse.id);
+      this.coursesService.getCoursesFromServer().subscribe({
+        next(data: any) {
+          if (data) {
+            _this.coursesService.setList(data);
+            _this.courses = _this.coursesService.getOrderedCourse(_this.page, _this.displayLimit);
+          }
+        },
+        error(msg) {
+          console.log('Error is getting course fetching: ', msg);
+        }
+      });
       this.showRemoveCourseModal = false;
     } else {
       this.removingCourse = this.coursesService.getItemById(id);
@@ -51,6 +74,23 @@ export class CoursesComponent implements OnInit {
   onSearchSubmit(searchedText: string): void {
     const filteredCourses = this.filterSearch.transform(this.coursesService.getList(this.page, this.displayLimit), searchedText);
     this.courses = this.orderByName.transform(filteredCourses);
+  }
+
+  onServerSearchSubmit(searchedText: string): void {
+    var _this = this;
+    this.coursesService.getCoursesFromServer({
+      textFragment: searchedText
+    }).subscribe({
+      next(data: any) {
+        if (data) {
+          _this.coursesService.setList(data);
+          _this.courses = _this.coursesService.getOrderedCourse(_this.page, _this.displayLimit);
+        }
+      },
+      error(msg) {
+        console.log('Error is getting course fetching: ', msg);
+      }
+    });
   }
 
 }

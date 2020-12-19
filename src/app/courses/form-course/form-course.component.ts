@@ -15,20 +15,20 @@ export class FormCourseComponent implements OnInit {
   @Output() cancel: EventEmitter<number> = new EventEmitter<number>();
   @Output() save: EventEmitter<object> = new EventEmitter<object>();
 
-  title: string;
+  name: string;
   description: string;
-  duration: number;
-  dateCreation: string;
+  length: number;
+  date: string;
 
   constructor(private datePipe: DatePipe, private courseService: CoursesService) { }
 
   ngOnInit(): void {
     if (this.course) {
-      const { title, description, duration, dateCreation } = this.course;
-      this.title = title;
+      const { name, description, length, date } = this.course;
+      this.name = name;
       this.description = description;
-      this.duration = duration;
-      this.dateCreation = this.datePipe.transform(dateCreation, 'MM/dd/yyyy');
+      this.length = length;
+      this.date = this.datePipe.transform(date, 'MM/dd/yyyy');
     }
   }
 
@@ -39,10 +39,10 @@ export class FormCourseComponent implements OnInit {
   onSave(event): void {
     this.save.emit({
       id: this.course?.id || (this.courseService.getCoursesLength() + 1),
-      title: this.title,
+      name: this.name,
       description: this.description,
-      duration: this.duration,
-      dateCreation: this.dateCreation
+      length: this.length,
+      date: this.date
     });
   }
 

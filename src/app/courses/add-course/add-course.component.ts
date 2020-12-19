@@ -17,9 +17,8 @@ export class AddCourseComponent {
   }
 
   onSave(data): void {
-    console.log(data);
     if (data) {
-      this.courseService.createCourse(data.title, data.duration, data.description, false);
+      this.courseService.createCourse(data.name, data.length, data.description, false);
       this.router.navigateByUrl('/courses');
     } else {
       console.log('enter required fields', data);

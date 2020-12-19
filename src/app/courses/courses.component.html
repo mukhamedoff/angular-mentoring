@@ -1,7 +1,7 @@
 <router-outlet></router-outlet>
 <div class="courses">
     <div class="container">
-        <app-search (searchSubmit)="onSearchSubmit($event)"></app-search>
+        <app-search (searchSubmit)="onServerSearchSubmit($event)"></app-search>
         <div class="courses__add-new">
             <a routerLink="new" class="btn btn--big icon-item"><span class="material-icons">add_circle_outline</span> Add course</a>
         </div>
