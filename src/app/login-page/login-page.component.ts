@@ -26,6 +26,7 @@ export class LoginPageComponent {
               _this.authService.saveToken(data.token);
               _this.authService.setLoginStatus(true);
               _this.router.navigateByUrl('/courses');
+              _this.authService.setLoginStatus(true);
             }
           },
           error(msg) {

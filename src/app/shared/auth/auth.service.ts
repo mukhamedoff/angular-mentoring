@@ -30,6 +30,7 @@ export class AuthService {
   logout(): void {
     this.storageService.remove('user');
     this.storageService.remove('token');
+    this.setLoginStatus(false);
   }
 
   isAuthenticated(): boolean {

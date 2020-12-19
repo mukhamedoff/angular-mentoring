@@ -28,7 +28,7 @@ export class CoursesComponent implements OnInit {
       next(data: any) {
         if (data) {
           _this.coursesService.setList(data);
-          _this.courses = _this.coursesService.getOrderedCourse(_this.page, _this.displayLimit);
+          _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
         }
       },
       error(msg) {
@@ -42,7 +42,7 @@ export class CoursesComponent implements OnInit {
   }
 
   onLoadMore(): void {
-    this.courses = this.coursesService.getOrderedCourse(++this.page, this.displayLimit);
+    this.courses = this.coursesService.getAll(++this.page, this.displayLimit);
   }
 
   onDelete(id: number): void {
@@ -53,7 +53,7 @@ export class CoursesComponent implements OnInit {
         next(data: any) {
           if (data) {
             _this.coursesService.setList(data);
-            _this.courses = _this.coursesService.getOrderedCourse(_this.page, _this.displayLimit);
+            _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
           }
         },
         error(msg) {
@@ -84,7 +84,7 @@ export class CoursesComponent implements OnInit {
       next(data: any) {
         if (data) {
           _this.coursesService.setList(data);
-          _this.courses = _this.coursesService.getOrderedCourse(_this.page, _this.displayLimit);
+          _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
         }
       },
       error(msg) {

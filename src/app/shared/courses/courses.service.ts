@@ -24,10 +24,6 @@ export class CoursesService {
         this.courses = courses;
     }
 
-    getCoursesLength(): number {
-        return this.courses.length;
-    }
-
     getCoursesFromServer(options?: object): Observable<object> {
         let url = 'http://localhost:3004/courses/';
         if(options && Object.entries(options).length > 0) {
@@ -36,8 +32,12 @@ export class CoursesService {
 
         return this.http.get(url);
     }
+    
+    private getCoursesLength(): number {
+        return this.courses.length;
+    }
 
-    getOrderedCourse(page: number, displayLimit: number): Course[] {
+    getAll(page: number, displayLimit: number): Course[] {
         return this.orderByName.transform(this.getList(page, displayLimit));
     }
 
@@ -55,7 +55,7 @@ export class CoursesService {
         return course;
     }
 
-    updateCourse(id: number, name: string, length: number, description: string, isTopRated: boolean): Course {
+    update(id: number, name: string, length: number, description: string, isTopRated: boolean): Course {
         const course: Course = this.getItemById(id);
         course.name = name;
         course.length = length;

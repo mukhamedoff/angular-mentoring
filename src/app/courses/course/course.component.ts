@@ -24,7 +24,7 @@ export class CourseComponent implements OnInit {
 
   onSave(course): void {
     const {id, title, duration, description } = course;
-    this.coursesService.updateCourse(id, title, duration, description, false);
+    this.coursesService.update(id, title, duration, description, false);
     this.router.navigateByUrl('/courses');
   }
 }

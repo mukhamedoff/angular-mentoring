@@ -4,7 +4,7 @@ import { Course } from './../../shared/courses/course.interface';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-form-course',
+  selector: 'app-course-form',
   templateUrl: './form-course.component.html',
   styleUrls: ['./form-course.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -38,7 +38,6 @@ export class FormCourseComponent implements OnInit {
 
   onSave(event): void {
     this.save.emit({
-      id: this.course?.id || (this.courseService.getCoursesLength() + 1),
       name: this.name,
       description: this.description,
       length: this.length,
