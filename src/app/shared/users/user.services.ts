@@ -15,7 +15,6 @@ export class UserService {
     }
 
     findUserInLogin(email: string, password: string): User | null {
-        const user = USERS.find((userItem: User) => userItem.email === email && userItem.password === password);
-        return user ? user : null;
+        return USERS.find(({ email: userEmail , password: userPass  }: User) => userEmail === email && userPass === password);
     }
 }

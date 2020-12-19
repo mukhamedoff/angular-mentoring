@@ -22,7 +22,6 @@ export class LoginPageComponent {
       if (user) {
         this.authService.login(user, this.password);
         this.router.navigateByUrl('/courses');
-        this.authService.setLoginStatus(true);
       }
     }
   }

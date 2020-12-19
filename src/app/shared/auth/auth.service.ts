@@ -17,11 +17,13 @@ export class AuthService {
   login(user: User, token: string): void {
     if (user) { this.storageService.set('user', JSON.stringify(user)); }
     if (token) { this.storageService.set('token', token); }
+    this.setLoginStatus(true);
   }
 
   logout(): void {
     this.storageService.remove('user');
     this.storageService.remove('token');
+    this.setLoginStatus(false);
   }
 
   isAuthenticated(): boolean {

@@ -13,11 +13,12 @@ export class CoursesService {
         return this.courses.slice(0, page * displayLimit);
     }
 
-    getCoursesLength(): number {
+    // TODO
+    private getCoursesLength(): number {
         return this.courses.length;
     }
 
-    getOrderedCourse(page: number, displayLimit: number): Course[] {
+    getAll(page: number, displayLimit: number): Course[] {
         return this.orderByName.transform(this.getList(page, displayLimit));
     }
 
@@ -34,7 +35,7 @@ export class CoursesService {
         return course;
     }
 
-    updateCourse(id: number, title: string, duration: number, description: string, topRated: boolean): Course {
+    update(id: number, title: string, duration: number, description: string, topRated: boolean): Course {
         const course: Course = this.getItemById(id);
         course.title = title;
         course.duration = duration;
