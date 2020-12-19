@@ -1,3 +1,7 @@
+import { AddCourseModule } from './courses/add-course/add-course.module';
+import { AuthGuardService } from './shared/auth/auth-guard.service';
+import { CourseModule } from './courses/course/course.module';
+import { LoginPageModule } from './login-page/login-page.module';
 import { FirstLetterCasePipe } from './first-letter-case.pipe';
 import { CoursesModule } from './courses/courses.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,7 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { AppRoutingModule } from './app-routing.module';
 import { McBreadcrumbsModule } from 'ngx-breadcrumbs';
-import { LoginPageComponent } from './login-page/login-page.component';
+import { MainComponent } from './main/main.component';
 
 @NgModule({
   declarations: [
@@ -19,16 +23,19 @@ import { LoginPageComponent } from './login-page/login-page.component';
     FooterComponent,
     BreadcrumbsComponent,
     FirstLetterCasePipe,
-    LoginPageComponent
+    MainComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     CoursesModule,
+    CourseModule,
     AppRoutingModule,
+    LoginPageModule,
+    AddCourseModule,
     McBreadcrumbsModule.forRoot()
   ],
-  providers: [FirstLetterCasePipe],
+  providers: [FirstLetterCasePipe, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

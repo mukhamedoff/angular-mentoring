@@ -23,7 +23,7 @@ export class CoursesComponent implements OnInit {
     public orderByName: OrderByPipe,
     public filterSearch: FilterSearchPipe
   ) {
-    this.courses = this.coursesService.getOrderedCourse(this.page, this.displayLimit);
+    this.courses = this.coursesService.getAll(this.page, this.displayLimit);
   }
 
   ngOnInit(): void {

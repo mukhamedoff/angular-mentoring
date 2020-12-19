@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { CoursesService } from './../../shared/courses/courses.service';
+import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { title } from 'process';
 
 @Component({
   selector: 'app-add-course',
@@ -7,21 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddCourseComponent {
 
-  title: string;
-  description: string;
-  duration: string;
-  date: string;
+  constructor(private router: Router, private courseService: CoursesService) {}
 
-  onCancel(event): void {
-    console.log('cancel');
+  onCancel(): void {
+    this.router.navigateByUrl('/courses');
   }
 
-  onSave(event): void {
-    console.log({
-      title: this.title,
-      description: this.description,
-      duration: this.duration,
-      date: this.date
-    });
+  onSave(data): void {
+    console.log(data);
+    if (data) {
+      this.courseService.createCourse(data.title, data.duration, data.description, false);
+      this.router.navigateByUrl('/courses');
+    } else {
+      console.log('enter required fields', data);
+    }
   }
 }

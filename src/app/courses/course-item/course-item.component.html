@@ -18,7 +18,7 @@
     <div class="course-item__body">
         <div class="course-item__description">{{ course.description }}</div>
         <div class="course-item__actions">
-            <button class="btn course-item__actions--edit icon-item"><span class="material-icons">edit</span>Edit</button>
+            <button [routerLink]="['/courses', course.id]" class="btn course-item__actions--edit icon-item"><span class="material-icons">edit</span>Edit</button>
             <button (click)="onDeleteItem()" class="btn course-item__actions--delete icon-item"><span class="material-icons">delete</span>Delete</button>
         </div>
     </div>

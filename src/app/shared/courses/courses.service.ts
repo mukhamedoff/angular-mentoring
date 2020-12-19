@@ -13,22 +13,29 @@ export class CoursesService {
         return this.courses.slice(0, page * displayLimit);
     }
 
-    getOrderedCourse(page: number, displayLimit: number): Course[] {
+    // TODO
+    private getCoursesLength(): number {
+        return this.courses.length;
+    }
+
+    getAll(page: number, displayLimit: number): Course[] {
         return this.orderByName.transform(this.getList(page, displayLimit));
     }
 
     createCourse(title: string, duration: number, description: string, topRated: boolean): Course {
-        return {
-            id: Math.floor(Math.random() * 1000) + 1,
+        const course = {
+            id: this.getCoursesLength() + 1,
             title,
             dateCreation: new Date(),
             duration,
             description,
             topRated
         };
+        this.courses.push(course);
+        return course;
     }
 
-    updateCourse(id: number, title: string, duration: number, description: string, topRated: boolean): Course {
+    update(id: number, title: string, duration: number, description: string, topRated: boolean): Course {
         const course: Course = this.getItemById(id);
         course.title = title;
         course.duration = duration;

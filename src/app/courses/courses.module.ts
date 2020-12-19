@@ -10,7 +10,6 @@ import { OrderByPipe } from '../order-by.pipe';
 import { FilterSearchPipe } from '../filter-search.pipe';
 import { CourseDeleteModalComponent } from './../modals/courses/course-removing/course-removing.component';
 import { CreationdatestatusDirective } from './../creationdatestatus.directive';
-import { AddCourseComponent } from './add-course/add-course.component';
 
 @NgModule({
   declarations: [
@@ -19,8 +18,7 @@ import { AddCourseComponent } from './add-course/add-course.component';
     CourseDeleteModalComponent,
     SearchComponent,
     DurationPipe,
-    CreationdatestatusDirective,
-    AddCourseComponent
+    CreationdatestatusDirective
   ],
   imports: [
     CommonModule,

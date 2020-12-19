@@ -3,7 +3,7 @@
     <div class="container">
         <app-search (searchSubmit)="onSearchSubmit($event)"></app-search>
         <div class="courses__add-new">
-            <a routerLink="add-course" class="btn btn--big icon-item"><span class="material-icons">add_circle_outline</span> Add course</a>
+            <a routerLink="new" class="btn btn--big icon-item"><span class="material-icons">add_circle_outline</span> Add course</a>
         </div>
         <div class="courses__list" *ngIf="courses.length; else coursesEmpty">
             <app-course-item 

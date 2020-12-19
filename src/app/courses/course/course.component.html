@@ -1,0 +1,8 @@
+<div class="container">
+    <div class="course">
+        <div class="course-head">
+            <h2 class="course-head__title">Edit course</h2>
+        </div>
+        <app-course-form (cancel)="onCancel($event)" (save)="onSave($event)" [course]="course"></app-course-form>
+    </div>
+</div>
