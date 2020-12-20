@@ -1,3 +1,4 @@
+import { PreloadingService } from './../shared/preloading.service';
 import { FilterSearchPipe } from './../filter-search.pipe';
 import { OrderByPipe } from './../order-by.pipe';
 import { CoursesService } from './../shared/courses/courses.service';
@@ -21,20 +22,23 @@ export class CoursesComponent implements OnInit {
   constructor(
     public coursesService: CoursesService,
     public orderByName: OrderByPipe,
-    public filterSearch: FilterSearchPipe
+    public filterSearch: FilterSearchPipe,
+    private preloadingService: PreloadingService
   ) {
     var _this = this;
-    this.coursesService.getCoursesFromServer().subscribe({
-      next(data: any) {
-        if (data) {
-          _this.coursesService.setList(data);
-          _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+    this.coursesService.getCoursesFromServer()
+      .subscribe({
+        next(data: any) {
+          if (data) {
+            _this.coursesService.setList(data);
+            _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+          }
+        },
+        error(msg) {
+          console.log('Error is getting course fetching: ', msg);
         }
-      },
-      error(msg) {
-        console.log('Error is getting course fetching: ', msg);
-      }
-    });
+      })
+      .add(() => { _this.preloadingService.setLoginStatus(false); });
   }
 
   ngOnInit(): void {
@@ -46,24 +50,33 @@ export class CoursesComponent implements OnInit {
   }
 
   onDelete(id: number): void {
+    const _this = this;
     if (this.showRemoveCourseModal) {
-      var _this = this;
       this.coursesService.removeServerCourse(this.removingCourse.id);
-      this.coursesService.getCoursesFromServer().subscribe({
-        next(data: any) {
-          if (data) {
-            _this.coursesService.setList(data);
-            _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+      this.coursesService.getCoursesFromServer()
+        .subscribe({
+          next(data: any) {
+            if (data) {
+              _this.coursesService.setList(data);
+              _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+            }
+          },
+          error(msg) {
+            console.log('Error is getting course fetching: ', msg);
           }
-        },
-        error(msg) {
-          console.log('Error is getting course fetching: ', msg);
-        }
-      });
+        })
+        .add(() => { _this.preloadingService.setLoginStatus(false); });;
       this.showRemoveCourseModal = false;
     } else {
-      this.removingCourse = this.coursesService.getItemById(id);
-      this.showRemoveCourseModal = true;
+      this.coursesService.getItemById(id)
+        .subscribe(
+          course => {
+            _this.removingCourse = course;
+            _this.showRemoveCourseModal = true;
+          },
+          error => { console.log(error); }
+        );
+      
     }
   }
 
@@ -78,19 +91,19 @@ export class CoursesComponent implements OnInit {
 
   onServerSearchSubmit(searchedText: string): void {
     var _this = this;
-    this.coursesService.getCoursesFromServer({
-      textFragment: searchedText
-    }).subscribe({
-      next(data: any) {
-        if (data) {
-          _this.coursesService.setList(data);
-          _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+    this.coursesService.getCoursesFromServer({ textFragment: searchedText })
+      .subscribe({
+        next(data: any) {
+          if (data) {
+            _this.coursesService.setList(data);
+            _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+          }
+        },
+        error(msg) {
+          console.log('Error is getting course fetching: ', msg);
         }
-      },
-      error(msg) {
-        console.log('Error is getting course fetching: ', msg);
-      }
-    });
+      })
+      .add(() => { _this.preloadingService.setLoginStatus(false); });
   }
 
 }

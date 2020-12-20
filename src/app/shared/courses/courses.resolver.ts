@@ -8,12 +8,20 @@ export class CourseResolver implements Resolve<Course> {
 
     constructor(private service: CoursesService) { }
 
-    public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Course> { 
+    public async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Course> { 
 
         const id = route.params.id;
 
         if (id) {
-            return Promise.resolve(this.service.getItemById(id));
+            // const course = await this.service.getItemById(id).first().toPromise();
+            // console.log({course});
+            return Promise.resolve({
+                id,
+                name: 'string',
+                date: new Date(),
+                length: 0,
+                description: 'string'
+            });
         } else {
             return Promise.resolve({
                 id: 0,

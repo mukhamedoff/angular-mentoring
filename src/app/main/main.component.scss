@@ -1,0 +1,12 @@
+@import '../scss/main';
+
+.main{
+    &__title {
+        font-size: 100px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    &__body {
+        text-align: center;
+    }
+}

@@ -1,12 +1,13 @@
 import { CoursesService } from './../../shared/courses/courses.service';
 import { Course } from './../../shared/courses/course.interface';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
-  styleUrls: ['./course.component.scss']
+  styleUrls: ['./course.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseComponent implements OnInit {
 
@@ -15,7 +16,12 @@ export class CourseComponent implements OnInit {
   constructor(private route: ActivatedRoute, private coursesService: CoursesService, private router: Router) { }
 
   ngOnInit(): void {
-    this.course = this.coursesService.getItemById(+this.route.snapshot.paramMap.get('id'));
+    const _this = this;
+    this.coursesService.getItemById(+this.route.snapshot.paramMap.get('id'))
+      .subscribe(
+        course => { _this.course = course; },
+        error => { console.log(error); }
+      );
   }
 
   onCancel(event): void {
@@ -23,8 +29,8 @@ export class CourseComponent implements OnInit {
   }
 
   onSave(course): void {
-    const {id, title, duration, description } = course;
-    this.coursesService.update(id, title, duration, description, false);
+    const {id, name, duration, description } = course;
+    this.coursesService.update(id, name, duration, description, false);
     this.router.navigateByUrl('/courses');
   }
 }

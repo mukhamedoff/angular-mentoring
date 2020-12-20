@@ -17,6 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { McBreadcrumbsModule } from 'ngx-breadcrumbs';
 import { MainComponent } from './main/main.component';
 import { TokenInterceptor } from './shared/auth/auth.inceptor';
+import { PreloadingComponent } from './preloading/preloading.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { TokenInterceptor } from './shared/auth/auth.inceptor';
     FooterComponent,
     BreadcrumbsComponent,
     FirstLetterCasePipe,
-    MainComponent
+    MainComponent,
+    PreloadingComponent
   ],
   imports: [
     BrowserModule,

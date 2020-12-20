@@ -1,10 +1,12 @@
-import { Observable } from 'rxjs';
+import { PreloadingService } from './../preloading.service';
+import { from, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { OrderByPipe } from './../../order-by.pipe';
 import { Injectable } from '@angular/core';
 import { Course } from './course.interface';
 import { mockedCourses } from './courses.mock';
 
+const ROOT_URL = 'http://localhost:3004/courses/';
 const httpOptions = {
     headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -14,7 +16,11 @@ const httpOptions = {
 export class CoursesService {
     courses: Course[] = mockedCourses;
 
-    constructor(public orderByName: OrderByPipe, private http: HttpClient){}
+    constructor(
+        public orderByName: OrderByPipe,
+        private http: HttpClient,
+        private preloadingService: PreloadingService
+    ){}
 
     getList(page: number, displayLimit: number): Course[] {
         return this.courses.slice(0, page * displayLimit);
@@ -25,7 +31,7 @@ export class CoursesService {
     }
 
     getCoursesFromServer(options?: object): Observable<object> {
-        let url = 'http://localhost:3004/courses/';
+        let url = ROOT_URL;
         if(options && Object.entries(options).length > 0) {
             url += `?${Object.entries(options).map(item => item.join('=')).join('&')}`;
         }
@@ -42,6 +48,7 @@ export class CoursesService {
     }
 
     createCourse(name: string, length: number, description: string, isTopRated: boolean): Course {
+        const _this = this;
         const course = {
             id: this.getCoursesLength() + 1,
             name,
@@ -51,17 +58,29 @@ export class CoursesService {
             authors: null,
             isTopRated
         };
-        this.http.post('http://localhost:3004/courses/', course, httpOptions);
+        this.http.post(ROOT_URL, course, httpOptions)
+            .subscribe()
+            .add(() => { _this.preloadingService.setLoginStatus(false); });
         return course;
     }
 
-    update(id: number, name: string, length: number, description: string, isTopRated: boolean): Course {
-        const course: Course = this.getItemById(id);
-        course.name = name;
-        course.length = length;
-        course.description = description;
-        course.isTopRated = isTopRated;
-        return course;
+    update(id: number, name: string, length: number, description: string, isTopRated: boolean): void {
+        const _this = this;
+        this.getItemById(id)
+            .subscribe(
+                course => {
+                    console.log(course);
+                    course.name = name;
+                    course.length = length;
+                    course.description = description;
+                    course.isTopRated = isTopRated;
+                    
+                    _this.http.patch(`${ROOT_URL}${id}`, course, httpOptions)
+                        .subscribe()
+                        .add(() => { _this.preloadingService.setLoginStatus(false); });
+                },
+                error => { console.log(error) }
+            );
     }
 
     removeCourse(id: number): Course[] {
@@ -69,12 +88,20 @@ export class CoursesService {
     }
 
     removeServerCourse(id: number): void {
-        this.http.delete(`http://localhost:3004/courses/${id}`);
+        const _this = this;
+        this.http.delete(`${ROOT_URL}${id}`)
+        .subscribe()
+        .add(() => { _this.preloadingService.setLoginStatus(false); });
     }
 
-    getItemById(id: number): Course {
+    getItemById(id: number): Observable<any> {
         const filtered = this.courses.filter(course => course.id === id);
-        return filtered.length && filtered[0];
+        
+        if (this.courses.length && filtered.length) {
+            return from(filtered);
+        } else {
+            return this.http.get(`${ROOT_URL}${id}`);
+        }
     }
 
     isNotEmpty(): boolean {

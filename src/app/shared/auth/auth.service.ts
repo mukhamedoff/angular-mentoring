@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import { User } from '../users/user.interface';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { BrowserStorageService } from '../storage.service';
@@ -10,6 +9,7 @@ const httpOptions = {
     'Content-Type':  'application/json'
   })
 };
+const ROOT_URL = 'http://localhost:3004/auth/';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  login(email: string, password: string): Observable<object> {
+  login(email: string, password: string): Observable<any> {
     return this.http.post('http://localhost:3004/auth/login/', {login: email, password}, httpOptions);
   }
 
@@ -37,8 +37,8 @@ export class AuthService {
     return !!this.storageService.get('token');
   }
 
-  getUserInfo(): User | object {
-    return this.http.post('http://localhost:3004/auth/userinfo/', {token: this.storageService.get('token') || ''}, httpOptions);
+  getUserInfo(): Observable<any> {
+    return this.http.post(`${ROOT_URL}userinfo/`, {token: this.storageService.get('token') || ''}, httpOptions);
   }
 
   saveToken(token: string): void {
