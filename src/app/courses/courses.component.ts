@@ -4,7 +4,7 @@ import { OrderByPipe } from './../order-by.pipe';
 import { CoursesService } from './../shared/courses/courses.service';
 import { Course } from '../shared/courses/course.interface';
 import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { of, concat } from 'rxjs';
 
@@ -35,10 +35,12 @@ export class CoursesComponent implements OnInit {
         tap(data => {
           this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
         }),
-        catchError(err => of(`Error is getting course fetching: ${err}`))
+        catchError(err => {
+          console.log(`Error is getting course fetching: ${err}`);
+          return of([]);
+        })
       )
-      .subscribe(console.log)
-      .add(() => { this.preloadingService.setLoginStatus(false); });
+      .subscribe();
   }
 
   ngOnInit(): void {
@@ -60,23 +62,29 @@ export class CoursesComponent implements OnInit {
           tap(data => {
             this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
           }),
-          catchError(err => of(`Error is getting course fetching: ${err}`))
+          catchError(err => {
+            console.log(`Error was caused on deleting: ${err}`);
+            return of([]);
+          })
         );
       
       concat(removeSubs, getCourseList)
-        .subscribe(console.log)
-        .add(() => { this.preloadingService.setLoginStatus(false); });
+        .subscribe();
       this.showRemoveCourseModal = false;
     } else {
       this.coursesService.getItemById(id)
-        .subscribe(
-          course => {
-            _this.removingCourse = course;
-            _this.showRemoveCourseModal = true;
-          },
-          error => { console.log(error); }
-        );
-      
+        .pipe(
+          take(1),
+          tap(course => {
+            this.removingCourse = course;
+            this.showRemoveCourseModal = true;
+          }),
+          catchError(err => {
+            console.log(`Error was caused getting course by id: ${err}`);
+            return of([]);
+          })
+        )
+        .subscribe();
     }
   }
 
@@ -92,10 +100,12 @@ export class CoursesComponent implements OnInit {
       tap(data => {
         this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
       }),
-      catchError(err => of(`Error is getting course fetching: ${err}`))
+      catchError(err => {
+        console.log(`Error was caused on searching: ${err}`);
+        return of([]);
+      })
     )
-    .subscribe(console.log)
-    .add(() => { this.preloadingService.setLoginStatus(false); });
+    .subscribe()
   }
 
 }

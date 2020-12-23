@@ -1,7 +1,9 @@
+import { take, tap, catchError } from 'rxjs/operators';
 import { CoursesService } from './../../shared/courses/courses.service';
 import { Course } from './../../shared/courses/course.interface';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-course',
@@ -16,12 +18,16 @@ export class CourseComponent implements OnInit {
   constructor(private route: ActivatedRoute, private coursesService: CoursesService, private router: Router) { }
 
   ngOnInit(): void {
-    const _this = this;
     this.coursesService.getItemById(+this.route.snapshot.paramMap.get('id'))
-      .subscribe(
-        course => { _this.course = course; },
-        error => { console.log(error); }
-      );
+      .pipe(
+        take(1),
+        tap(course => { this.course = course; }),
+        catchError(err => {
+          console.log(`Error was caused getting course by id: ${err}`);
+          return of([]);
+        })
+      )
+      .subscribe();
   }
 
   onCancel(event): void {
@@ -29,8 +35,7 @@ export class CourseComponent implements OnInit {
   }
 
   onSave(course): void {
-    const {id, name, duration, description } = course;
-    this.coursesService.update(id, name, duration, description, false);
+    this.coursesService.update(course);
     this.router.navigateByUrl('/courses');
   }
 }

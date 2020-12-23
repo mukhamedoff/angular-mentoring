@@ -39,8 +39,7 @@ export class LoginPageComponent {
           error(msg) {
             console.log('Error is getting: ', msg);
           }
-        })
-        .add(() => { _this.preloadingService.setLoginStatus(false); });
+        });
     }
   }
 }

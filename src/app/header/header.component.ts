@@ -62,8 +62,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         error: error => {
           console.log(error);
         }
-      })
-      .add(() => { _this.preloadingService.setLoginStatus(false); });
+      });
   }
 
   onLogin(): void {

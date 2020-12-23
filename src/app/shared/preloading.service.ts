@@ -6,12 +6,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class PreloadingService {
   
-  private loadingStatusSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public loadingStatusObs: Observable<boolean> = this.loadingStatusSubject.asObservable();
+  private loading$$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public loading$: Observable<boolean> = this.loading$$.asObservable();
 
   constructor() { }
 
   setLoginStatus(value: boolean): void {
-    this.loadingStatusSubject.next(value);
+    this.loading$$.next(value);
   }
 }
