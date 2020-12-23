@@ -1,25 +1,19 @@
-import { PreloadingService } from './../preloading.service';
-import { from, Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ROOT_URL } from './../../../environments/environment';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { OrderByPipe } from './../../order-by.pipe';
 import { Injectable } from '@angular/core';
 import { Course } from './course.interface';
 import { mockedCourses } from './courses.mock';
 
-const ROOT_URL = 'http://localhost:3004/courses/';
-const httpOptions = {
-    headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-    })
-};
+const COURSE_URL = `${ROOT_URL}courses/`;
 @Injectable({ providedIn: 'root' })
 export class CoursesService {
     courses: Course[] = mockedCourses;
 
     constructor(
         public orderByName: OrderByPipe,
-        private http: HttpClient,
-        private preloadingService: PreloadingService
+        private http: HttpClient
     ){}
 
     getList(page: number, displayLimit: number): Course[] {
@@ -30,8 +24,8 @@ export class CoursesService {
         this.courses = courses;
     }
 
-    getCoursesFromServer(options?: object): Observable<object> {
-        let url = ROOT_URL;
+    getAll(options?: object): Observable<object> {
+        let url = COURSE_URL;
         if(options && Object.entries(options).length > 0) {
             url += `?${Object.entries(options).map(item => item.join('=')).join('&')}`;
         }
@@ -43,12 +37,11 @@ export class CoursesService {
         return this.courses.length;
     }
 
-    getAll(page: number, displayLimit: number): Course[] {
+    getOrdered(page: number, displayLimit: number): Course[] {
         return this.orderByName.transform(this.getList(page, displayLimit));
     }
 
     createCourse(name: string, length: number, description: string, isTopRated: boolean): Course {
-        const _this = this;
         const course = {
             id: this.getCoursesLength() + 1,
             name,
@@ -58,50 +51,21 @@ export class CoursesService {
             authors: null,
             isTopRated
         };
-        this.http.post(ROOT_URL, course, httpOptions)
-            .subscribe()
-            .add(() => { _this.preloadingService.setLoginStatus(false); });
+        this.http.post(COURSE_URL, course)
+            .subscribe();
         return course;
     }
 
-    update(id: number, name: string, length: number, description: string, isTopRated: boolean): void {
-        const _this = this;
-        this.getItemById(id)
-            .subscribe(
-                course => {
-                    console.log(course);
-                    course.name = name;
-                    course.length = length;
-                    course.description = description;
-                    course.isTopRated = isTopRated;
-                    
-                    _this.http.patch(`${ROOT_URL}${id}`, course, httpOptions)
-                        .subscribe()
-                        .add(() => { _this.preloadingService.setLoginStatus(false); });
-                },
-                error => { console.log(error) }
-            );
+    update(course: Course): Observable<any> {
+        return this.http.patch(`${COURSE_URL}${course.id}`, course);
     }
 
-    removeCourse(id: number): Course[] {
-        return this.courses = this.courses.filter(course => course.id !== id);
-    }
-
-    removeServerCourse(id: number): void {
-        const _this = this;
-        this.http.delete(`${ROOT_URL}${id}`)
-        .subscribe()
-        .add(() => { _this.preloadingService.setLoginStatus(false); });
+    removeCourse(id: number): Observable<any> {
+        return this.http.delete(`${COURSE_URL}${id}`)
     }
 
     getItemById(id: number): Observable<any> {
-        const filtered = this.courses.filter(course => course.id === id);
-        
-        if (this.courses.length && filtered.length) {
-            return from(filtered);
-        } else {
-            return this.http.get(`${ROOT_URL}${id}`);
-        }
+        return this.http.get(`${COURSE_URL}${id}`);
     }
 
     isNotEmpty(): boolean {

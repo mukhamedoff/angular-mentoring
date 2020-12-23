@@ -15,7 +15,7 @@ export class AppComponent {
   title = 'my-app';
   isLoggedIn$: Observable<boolean> = this.authService.loginStatusObs;
   isLogin$: Observable<boolean> = this.store$.pipe(select(selectIsLogin));
-  isLoading$: Observable<boolean> = this.preloadingService.loadingStatusObs;
+  isLoading$: Observable<boolean> = this.preloadingService.loading$;
 
   constructor(
     public authService: AuthService,

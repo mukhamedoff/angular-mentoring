@@ -10,6 +10,8 @@ import { select, Store } from '@ngrx/store';
 import { selectMenuList } from '../store/menu/menu.selectors';
 import { selectCourseList } from '../store/courses/courses.selectors';
 import { ChangeCourseListAction } from '../store/courses/courses.actions';
+import { catchError, take, tap } from 'rxjs/operators';
+import { concat, of } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -33,23 +35,21 @@ export class CoursesComponent implements OnInit {
     private preloadingService: PreloadingService,
     private store$: Store<CoursesState>
   ) {
-    var _this = this;
-    this.coursesService.getCoursesFromServer()
-      .subscribe({
-        next(data: any) {
-          if (data) {
-            _this.coursesService.setList(data);
-            // _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
-            _this.store$.dispatch(new ChangeCourseListAction({
-              courses: _this.coursesService.getAll(_this.page, _this.displayLimit)
-            }));
-          }
-        },
-        error(msg) {
-          console.log('Error is getting course fetching: ', msg);
-        }
-      })
-      .add(() => { _this.preloadingService.setLoginStatus(false); });
+    this.coursesService
+      .getAll()
+      .pipe(
+        tap((data: any) => this.coursesService.setList(data)),
+        tap(data => {
+          this.store$.dispatch(new ChangeCourseListAction({
+            courses: this.coursesService.getOrdered(this.page, this.displayLimit)
+          }));
+        }),
+        catchError(err => {
+          console.log(`Error is getting course fetching: ${err}`);
+          return of([]);
+        })
+      )
+      .subscribe();
   }
 
   ngOnInit(): void {
@@ -57,40 +57,45 @@ export class CoursesComponent implements OnInit {
   }
 
   onLoadMore(): void {
-    this.courses = this.coursesService.getAll(++this.page, this.displayLimit);
+    this.courses = this.coursesService.getOrdered(++this.page, this.displayLimit);
   }
 
   onDelete(id: number): void {
     const _this = this;
     if (this.showRemoveCourseModal) {
-      this.coursesService.removeServerCourse(this.removingCourse.id);
-      this.coursesService.getCoursesFromServer()
-        .subscribe({
-          next(data: any) {
-            if (data) {
-              _this.coursesService.setList(data);
-              // _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
-              _this.store$.dispatch(new ChangeCourseListAction({
-                courses: _this.coursesService.getAll(_this.page, _this.displayLimit)
-              }));
-            }
-          },
-          error(msg) {
-            console.log('Error is getting course fetching: ', msg);
-          }
-        })
-        .add(() => { _this.preloadingService.setLoginStatus(false); });;
+      const removeSubs = this.coursesService.removeCourse(this.removingCourse.id);
+      const getCourseList = this.coursesService
+        .getAll()
+        .pipe(
+          tap((data: any) => this.coursesService.setList(data)),
+          tap(data => {
+            this.store$.dispatch(new ChangeCourseListAction({
+              courses: this.coursesService.getOrdered(this.page, this.displayLimit)
+            }));
+          }),
+          catchError(err => {
+            console.log(`Error was caused on deleting: ${err}`);
+            return of([]);
+          })
+        );
+      
+      concat(removeSubs, getCourseList)
+        .subscribe();
       this.showRemoveCourseModal = false;
     } else {
       this.coursesService.getItemById(id)
-        .subscribe(
-          course => {
-            _this.removingCourse = course;
-            _this.showRemoveCourseModal = true;
-          },
-          error => { console.log(error); }
-        );
-      
+        .pipe(
+          take(1),
+          tap(course => {
+            this.removingCourse = course;
+            this.showRemoveCourseModal = true;
+          }),
+          catchError(err => {
+            console.log(`Error was caused getting course by id: ${err}`);
+            return of([]);
+          })
+        )
+        .subscribe();
     }
   }
 
@@ -99,31 +104,21 @@ export class CoursesComponent implements OnInit {
   }
 
   onSearchSubmit(searchedText: string): void {
-    const filteredCourses = this.filterSearch.transform(this.coursesService.getList(this.page, this.displayLimit), searchedText);
-    // this.courses = this.orderByName.transform(filteredCourses);
-    this.store$.dispatch(new ChangeCourseListAction({
-      courses: this.orderByName.transform(filteredCourses)
-    }));
-  }
-
-  onServerSearchSubmit(searchedText: string): void {
-    var _this = this;
-    this.coursesService.getCoursesFromServer({ textFragment: searchedText })
-      .subscribe({
-        next(data: any) {
-          if (data) {
-            _this.coursesService.setList(data);
-            // _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
-            _this.store$.dispatch(new ChangeCourseListAction({
-              courses: _this.coursesService.getAll(_this.page, _this.displayLimit)
-            }));
-          }
-        },
-        error(msg) {
-          console.log('Error is getting course fetching: ', msg);
-        }
+    this.coursesService
+    .getAll({ textFragment: searchedText })
+    .pipe(
+      tap((data: any) => this.coursesService.setList(data)),
+      tap(data => {
+        this.store$.dispatch(new ChangeCourseListAction({
+          courses: this.coursesService.getOrdered(this.page, this.displayLimit)
+        }));
+      }),
+      catchError(err => {
+        console.log(`Error was caused on searching: ${err}`);
+        return of([]);
       })
-      .add(() => { _this.preloadingService.setLoginStatus(false); });
+    )
+    .subscribe()
   }
 
 }
