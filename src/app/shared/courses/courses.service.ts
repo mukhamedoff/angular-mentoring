@@ -30,7 +30,7 @@ export class CoursesService {
         this.courses = courses;
     }
 
-    getCoursesFromServer(options?: object): Observable<object> {
+    getAll(options?: object): Observable<object> {
         let url = ROOT_URL;
         if(options && Object.entries(options).length > 0) {
             url += `?${Object.entries(options).map(item => item.join('=')).join('&')}`;
@@ -43,7 +43,7 @@ export class CoursesService {
         return this.courses.length;
     }
 
-    getAll(page: number, displayLimit: number): Course[] {
+    getOrdered(page: number, displayLimit: number): Course[] {
         return this.orderByName.transform(this.getList(page, displayLimit));
     }
 
@@ -83,15 +83,8 @@ export class CoursesService {
             );
     }
 
-    removeCourse(id: number): Course[] {
-        return this.courses = this.courses.filter(course => course.id !== id);
-    }
-
-    removeServerCourse(id: number): void {
-        const _this = this;
-        this.http.delete(`${ROOT_URL}${id}`)
-        .subscribe()
-        .add(() => { _this.preloadingService.setLoginStatus(false); });
+    removeCourse(id: number): Observable<any> {
+        return this.http.delete(`${ROOT_URL}${id}`)
     }
 
     getItemById(id: number): Observable<any> {

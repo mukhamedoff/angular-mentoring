@@ -12,12 +12,9 @@ export class TokenInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const userToken = this.storageService.get('token');
         this.preloading.setLoginStatus(true);
-        if (userToken) {
-            const modifiedReq = req.clone({ 
-                headers: req.headers.set('Authorization', `Bearer ${userToken}`),
-            });
-            return next.handle(modifiedReq);
-        }
-        return next.handle(req);
+        return next.handle(
+            userToken ? 
+            req.clone({  headers: req.headers.set('Authorization', `Bearer ${userToken}`) }) :
+            req);
     }
 }
