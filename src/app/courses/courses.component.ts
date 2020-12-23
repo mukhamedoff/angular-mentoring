@@ -3,6 +3,9 @@ import { OrderByPipe } from './../order-by.pipe';
 import { CoursesService } from './../shared/courses/courses.service';
 import { Course } from '../shared/courses/course.interface';
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { of, concat } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -24,17 +27,16 @@ export class CoursesComponent implements OnInit {
     public filterSearch: FilterSearchPipe
   ) {
     var _this = this;
-    this.coursesService.getCoursesFromServer().subscribe({
-      next(data: any) {
-        if (data) {
-          _this.coursesService.setList(data);
-          _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
-        }
-      },
-      error(msg) {
-        console.log('Error is getting course fetching: ', msg);
-      }
-    });
+    this.coursesService
+      .getAll()
+      .pipe(
+        tap((data: any) => this.coursesService.setList(data)),
+        tap(data => {
+          this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
+        }),
+        catchError(err => of(`Error is getting course fetching: ${err}`))
+      )
+      .subscribe(console.log);
   }
 
   ngOnInit(): void {
@@ -42,24 +44,23 @@ export class CoursesComponent implements OnInit {
   }
 
   onLoadMore(): void {
-    this.courses = this.coursesService.getAll(++this.page, this.displayLimit);
+    this.courses = this.coursesService.getOrdered(++this.page, this.displayLimit);
   }
 
   onDelete(id: number): void {
     if (this.showRemoveCourseModal) {
-      var _this = this;
-      this.coursesService.removeServerCourse(this.removingCourse.id);
-      this.coursesService.getCoursesFromServer().subscribe({
-        next(data: any) {
-          if (data) {
-            _this.coursesService.setList(data);
-            _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
-          }
-        },
-        error(msg) {
-          console.log('Error is getting course fetching: ', msg);
-        }
-      });
+      const removeSubs = this.coursesService.removeCourse(this.removingCourse.id);
+      const getCourseList = this.coursesService
+        .getAll()
+        .pipe(
+          tap((data: any) => this.coursesService.setList(data)),
+          tap(data => {
+            this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
+          }),
+          catchError(err => of(`Error is getting course fetching: ${err}`))
+        );
+      
+      concat(removeSubs, getCourseList).subscribe(console.log);
       this.showRemoveCourseModal = false;
     } else {
       this.removingCourse = this.coursesService.getItemById(id);
@@ -72,25 +73,16 @@ export class CoursesComponent implements OnInit {
   }
 
   onSearchSubmit(searchedText: string): void {
-    const filteredCourses = this.filterSearch.transform(this.coursesService.getList(this.page, this.displayLimit), searchedText);
-    this.courses = this.orderByName.transform(filteredCourses);
-  }
-
-  onServerSearchSubmit(searchedText: string): void {
-    var _this = this;
-    this.coursesService.getCoursesFromServer({
-      textFragment: searchedText
-    }).subscribe({
-      next(data: any) {
-        if (data) {
-          _this.coursesService.setList(data);
-          _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
-        }
-      },
-      error(msg) {
-        console.log('Error is getting course fetching: ', msg);
-      }
-    });
+    this.coursesService
+    .getAll({ textFragment: searchedText })
+    .pipe(
+      tap((data: any) => this.coursesService.setList(data)),
+      tap(data => {
+        this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
+      }),
+      catchError(err => of(`Error is getting course fetching: ${err}`))
+    )
+    .subscribe(console.log);
   }
 
 }

@@ -24,7 +24,7 @@ export class CoursesService {
         this.courses = courses;
     }
 
-    getCoursesFromServer(options?: object): Observable<object> {
+    getAll(options?: object): Observable<object> {
         let url = 'http://localhost:3004/courses/';
         if(options && Object.entries(options).length > 0) {
             url += `?${Object.entries(options).map(item => item.join('=')).join('&')}`;
@@ -37,7 +37,7 @@ export class CoursesService {
         return this.courses.length;
     }
 
-    getAll(page: number, displayLimit: number): Course[] {
+    getOrdered(page: number, displayLimit: number): Course[] {
         return this.orderByName.transform(this.getList(page, displayLimit));
     }
 
@@ -64,12 +64,8 @@ export class CoursesService {
         return course;
     }
 
-    removeCourse(id: number): Course[] {
-        return this.courses = this.courses.filter(course => course.id !== id);
-    }
-
-    removeServerCourse(id: number): void {
-        this.http.delete(`http://localhost:3004/courses/${id}`);
+    removeCourse(id: number): Observable<any> {
+        return this.http.delete(`http://localhost:3004/courses/${ id }`);
     }
 
     getItemById(id: number): Course {
