@@ -1,3 +1,4 @@
+import { reducers, metaReducers } from './store/index';
 import { AddCourseModule } from './courses/add-course/add-course.module';
 import { AuthGuardService } from './shared/auth/auth-guard.service';
 import { CourseModule } from './courses/course/course.module';
@@ -18,6 +19,12 @@ import { McBreadcrumbsModule } from 'ngx-breadcrumbs';
 import { MainComponent } from './main/main.component';
 import { TokenInterceptor } from './shared/auth/auth.inceptor';
 import { PreloadingComponent } from './preloading/preloading.component';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { AppEffects } from './app.effects';
 
 @NgModule({
   declarations: [
@@ -38,7 +45,17 @@ import { PreloadingComponent } from './preloading/preloading.component';
     LoginPageModule,
     AddCourseModule,
     HttpClientModule,
-    McBreadcrumbsModule.forRoot()
+    McBreadcrumbsModule.forRoot(),
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true
+      }
+    }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([AppEffects]),
+    StoreRouterConnectingModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

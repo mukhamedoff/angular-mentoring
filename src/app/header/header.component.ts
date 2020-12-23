@@ -1,45 +1,44 @@
+import { MenuState } from './../store/menu/menu.reducers';
+import { Menu } from './../shared/menu/menu.interface';
+import { AuthChangeLoginStatusAction } from './../store/auth/auth.actions';
+import { selectIsLogin } from './../store/auth/auth.selectors';
+import { AuthState } from './../store/auth/auth.reducer';
 import { PreloadingService } from './../shared/preloading.service';
 import { FirstLetterCasePipe } from './../first-letter-case.pipe';
 import { AuthService } from '../shared/auth/auth.service';
 import { MenuService } from './../shared/menu/menu.services';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { Router } from '@angular/router';
+import { selectMenuList } from '../store/menu/menu.selectors';
+import { ChangeMenuListAction } from '../store/menu/menu.actions';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  private subscription: Subscription;
+export class HeaderComponent implements OnInit {
   menu = [];
   isLoggedIn$: Observable<boolean> = this.authService.loginStatusObs;
+  isLogin$: Observable<boolean> = this.store$.pipe(select(selectIsLogin));
+  menuList$: Observable<Array<Menu>> = this.store$.pipe(select(selectMenuList));
 
   constructor(
     public menuService: MenuService,
     public firstLetterCasePipe: FirstLetterCasePipe,
     public authService: AuthService,
-    private preloadingService: PreloadingService
+    private preloadingService: PreloadingService,
+    private router: Router,
+    private store$: Store<AuthState | MenuState>
   ) {}
 
-  ngOnInit(): void {
-    const _this = this;
-    
-    this.subscription = this.isLoggedIn$.subscribe(
-      (isLoggedIn: boolean) => {
-        if (isLoggedIn && _this.authService.isAuthenticated()) {
-          _this.getUserInfo();
-        } else {
-          _this.menu = _this.menuService.getMenu(false);
-        }
-      },
-      err => { console.log(err); }
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  ngOnInit(): void {    
+    if (this.authService.isAuthenticated()) {
+      this.getUserInfo();
+    }
   }
 
   onAction(event, action: string): void {
@@ -57,7 +56,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: name => {
-          _this.menu = _this.menuService.getMenu(true, `${name.first} ${name.last}`);
+          _this.store$.dispatch(new ChangeMenuListAction({
+            menuList: _this.menuService.getMenu(true, `${name.first} ${name.last}`)
+          }));
         },
         error: error => {
           console.log(error);
@@ -66,11 +67,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogin(): void {
-    this.authService.setLoginStatus(false);
+    this.store$.dispatch(new AuthChangeLoginStatusAction({
+      isLogin: true
+    }));
   }
 
   onLogout(): void {
     this.authService.logout();
+    this.store$.dispatch(new AuthChangeLoginStatusAction({
+      isLogin: false
+    }));
+    this.store$.dispatch(new ChangeMenuListAction({
+      menuList: this.menuService.getMenu(false)
+    }));
+    this.router.navigateByUrl('/');
   }
 
 }

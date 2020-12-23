@@ -5,9 +5,9 @@
         <div class="courses__add-new">
             <a routerLink="new" class="btn btn--big icon-item"><span class="material-icons">add_circle_outline</span> Add course</a>
         </div>
-        <div class="courses__list" *ngIf="courses.length; else coursesEmpty">
+        <div class="courses__list" *ngIf="(courses$ | async).length; else coursesEmpty">
             <app-course-item 
-                *ngFor="let course of courses"
+                *ngFor="let course of courses$ | async"
                 (deleteCourse)="onDelete($event)"
                 [course]="course"></app-course-item>
                 <div class="courses__more" *ngIf="hasMore">

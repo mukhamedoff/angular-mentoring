@@ -4,6 +4,11 @@ import { AuthService } from './../shared/auth/auth.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { AuthState } from '../store/auth/auth.reducer';
+import { AuthChangeLoginStatusAction } from '../store/auth/auth.actions';
+import { ChangeMenuListAction } from '../store/menu/menu.actions';
+import { MenuService } from '../shared/menu/menu.services';
 
 @Component({
   selector: 'app-login-page',
@@ -19,8 +24,10 @@ export class LoginPageComponent {
   constructor(
     public authService: AuthService,
     public userService: UserService,
+    public menuService: MenuService,
     private router: Router,
-    private preloadingService: PreloadingService
+    private preloadingService: PreloadingService,
+    private store$: Store<AuthState>
   ) { }
 
   async onLogin(): Promise<void> {
@@ -32,8 +39,20 @@ export class LoginPageComponent {
           next(token) {
             if (token) {
               _this.authService.saveToken(token);
-              _this.router.navigateByUrl('/courses');
-              _this.authService.setLoginStatus(true);
+
+              _this.authService.getUserInfo()
+                .pipe(map(user => user.name))
+                .subscribe(
+                  name => {
+                    _this.store$.dispatch(new ChangeMenuListAction({
+                      menuList: _this.menuService.getMenu(true, `${name.first} ${name.last}`)
+                    }));
+                    _this.store$.dispatch(new AuthChangeLoginStatusAction({
+                      isLogin: false
+                    }));
+                    _this.router.navigateByUrl('/courses');
+                  }
+                )
             }
           },
           error(msg) {
