@@ -5,7 +5,7 @@
 export const environment = {
   production: false
 };
-
+export const ROOT_URL = 'http://localhost:3004/';
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

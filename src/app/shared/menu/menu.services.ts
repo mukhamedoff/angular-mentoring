@@ -4,10 +4,10 @@ import { Menu } from './menu.interface';
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {
-    registeredMenu: Menu[] = registeredMenu;
+    registeredMenu = registeredMenu;
     unRegisteredMenu: Menu[] = unRegisteredMenu;
 
-    getMenu(isUserLogin: boolean): Menu[] {
-        return isUserLogin ? this.registeredMenu : this.unRegisteredMenu;
+    getMenu(isAuthenticated: boolean, userInfo?: string): Menu[] {
+        return isAuthenticated ? this.registeredMenu({userInfo}) : this.unRegisteredMenu;
     }
 }

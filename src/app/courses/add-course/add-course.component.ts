@@ -1,7 +1,6 @@
 import { CoursesService } from './../../shared/courses/courses.service';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
-import { title } from 'process';
 
 @Component({
   selector: 'app-add-course',

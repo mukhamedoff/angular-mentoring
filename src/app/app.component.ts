@@ -1,3 +1,4 @@
+import { PreloadingService } from './shared/preloading.service';
 import { Observable } from 'rxjs';
 import { AuthService } from './shared/auth/auth.service';
 import { Component } from '@angular/core';
@@ -10,6 +11,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'my-app';
   isLoggedIn$: Observable<boolean> = this.authService.loginStatusObs;
+  isLoading$: Observable<boolean> = this.preloadingService.loading$;
 
-  constructor(public authService: AuthService){}
+  constructor(public authService: AuthService, public preloadingService: PreloadingService){}
 }

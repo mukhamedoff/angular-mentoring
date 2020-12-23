@@ -1,9 +1,10 @@
+import { PreloadingService } from './../shared/preloading.service';
 import { FilterSearchPipe } from './../filter-search.pipe';
 import { OrderByPipe } from './../order-by.pipe';
 import { CoursesService } from './../shared/courses/courses.service';
 import { Course } from '../shared/courses/course.interface';
 import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { of, concat } from 'rxjs';
 
@@ -24,9 +25,9 @@ export class CoursesComponent implements OnInit {
   constructor(
     public coursesService: CoursesService,
     public orderByName: OrderByPipe,
-    public filterSearch: FilterSearchPipe
+    public filterSearch: FilterSearchPipe,
+    private preloadingService: PreloadingService
   ) {
-    var _this = this;
     this.coursesService
       .getAll()
       .pipe(
@@ -34,9 +35,12 @@ export class CoursesComponent implements OnInit {
         tap(data => {
           this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
         }),
-        catchError(err => of(`Error is getting course fetching: ${err}`))
+        catchError(err => {
+          console.log(`Error is getting course fetching: ${err}`);
+          return of([]);
+        })
       )
-      .subscribe(console.log);
+      .subscribe();
   }
 
   ngOnInit(): void {
@@ -48,6 +52,7 @@ export class CoursesComponent implements OnInit {
   }
 
   onDelete(id: number): void {
+    const _this = this;
     if (this.showRemoveCourseModal) {
       const removeSubs = this.coursesService.removeCourse(this.removingCourse.id);
       const getCourseList = this.coursesService
@@ -57,14 +62,29 @@ export class CoursesComponent implements OnInit {
           tap(data => {
             this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
           }),
-          catchError(err => of(`Error is getting course fetching: ${err}`))
+          catchError(err => {
+            console.log(`Error was caused on deleting: ${err}`);
+            return of([]);
+          })
         );
       
-      concat(removeSubs, getCourseList).subscribe(console.log);
+      concat(removeSubs, getCourseList)
+        .subscribe();
       this.showRemoveCourseModal = false;
     } else {
-      this.removingCourse = this.coursesService.getItemById(id);
-      this.showRemoveCourseModal = true;
+      this.coursesService.getItemById(id)
+        .pipe(
+          take(1),
+          tap(course => {
+            this.removingCourse = course;
+            this.showRemoveCourseModal = true;
+          }),
+          catchError(err => {
+            console.log(`Error was caused getting course by id: ${err}`);
+            return of([]);
+          })
+        )
+        .subscribe();
     }
   }
 
@@ -80,9 +100,12 @@ export class CoursesComponent implements OnInit {
       tap(data => {
         this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
       }),
-      catchError(err => of(`Error is getting course fetching: ${err}`))
+      catchError(err => {
+        console.log(`Error was caused on searching: ${err}`);
+        return of([]);
+      })
     )
-    .subscribe(console.log);
+    .subscribe()
   }
 
 }

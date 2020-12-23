@@ -1,20 +1,20 @@
+import { ROOT_URL } from './../../../environments/environment';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { OrderByPipe } from './../../order-by.pipe';
 import { Injectable } from '@angular/core';
 import { Course } from './course.interface';
 import { mockedCourses } from './courses.mock';
 
-const httpOptions = {
-    headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-    })
-};
+const COURSE_URL = `${ROOT_URL}courses/`;
 @Injectable({ providedIn: 'root' })
 export class CoursesService {
     courses: Course[] = mockedCourses;
 
-    constructor(public orderByName: OrderByPipe, private http: HttpClient){}
+    constructor(
+        public orderByName: OrderByPipe,
+        private http: HttpClient
+    ){}
 
     getList(page: number, displayLimit: number): Course[] {
         return this.courses.slice(0, page * displayLimit);
@@ -25,7 +25,7 @@ export class CoursesService {
     }
 
     getAll(options?: object): Observable<object> {
-        let url = 'http://localhost:3004/courses/';
+        let url = COURSE_URL;
         if(options && Object.entries(options).length > 0) {
             url += `?${Object.entries(options).map(item => item.join('=')).join('&')}`;
         }
@@ -51,26 +51,21 @@ export class CoursesService {
             authors: null,
             isTopRated
         };
-        this.http.post('http://localhost:3004/courses/', course, httpOptions);
+        this.http.post(COURSE_URL, course)
+            .subscribe();
         return course;
     }
 
-    update(id: number, name: string, length: number, description: string, isTopRated: boolean): Course {
-        const course: Course = this.getItemById(id);
-        course.name = name;
-        course.length = length;
-        course.description = description;
-        course.isTopRated = isTopRated;
-        return course;
+    update(course: Course): Observable<any> {
+        return this.http.patch(`${COURSE_URL}${course.id}`, course);
     }
 
     removeCourse(id: number): Observable<any> {
-        return this.http.delete(`http://localhost:3004/courses/${ id }`);
+        return this.http.delete(`${COURSE_URL}${id}`)
     }
 
-    getItemById(id: number): Course {
-        const filtered = this.courses.filter(course => course.id === id);
-        return filtered.length && filtered[0];
+    getItemById(id: number): Observable<any> {
+        return this.http.get(`${COURSE_URL}${id}`);
     }
 
     isNotEmpty(): boolean {
