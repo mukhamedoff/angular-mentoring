@@ -3,6 +3,9 @@ import { OrderByPipe } from './../order-by.pipe';
 import { CoursesService } from './../shared/courses/courses.service';
 import { Course } from '../shared/courses/course.interface';
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { of, concat } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -11,7 +14,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoursesComponent implements OnInit {
 
-  courses: Course[];
+  courses: Course[] = [];
   removingCourse: Course;
   hasMore = false;
   showRemoveCourseModal = false;
@@ -23,7 +26,17 @@ export class CoursesComponent implements OnInit {
     public orderByName: OrderByPipe,
     public filterSearch: FilterSearchPipe
   ) {
-    this.courses = this.coursesService.getAll(this.page, this.displayLimit);
+    var _this = this;
+    this.coursesService
+      .getAll()
+      .pipe(
+        tap((data: any) => this.coursesService.setList(data)),
+        tap(data => {
+          this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
+        }),
+        catchError(err => of(`Error is getting course fetching: ${err}`))
+      )
+      .subscribe(console.log);
   }
 
   ngOnInit(): void {
@@ -31,12 +44,23 @@ export class CoursesComponent implements OnInit {
   }
 
   onLoadMore(): void {
-    console.log('Load more button was clicked');
+    this.courses = this.coursesService.getOrdered(++this.page, this.displayLimit);
   }
 
   onDelete(id: number): void {
     if (this.showRemoveCourseModal) {
-      this.courses = this.coursesService.removeCourse(this.removingCourse.id);
+      const removeSubs = this.coursesService.removeCourse(this.removingCourse.id);
+      const getCourseList = this.coursesService
+        .getAll()
+        .pipe(
+          tap((data: any) => this.coursesService.setList(data)),
+          tap(data => {
+            this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
+          }),
+          catchError(err => of(`Error is getting course fetching: ${err}`))
+        );
+      
+      concat(removeSubs, getCourseList).subscribe(console.log);
       this.showRemoveCourseModal = false;
     } else {
       this.removingCourse = this.coursesService.getItemById(id);
@@ -49,8 +73,16 @@ export class CoursesComponent implements OnInit {
   }
 
   onSearchSubmit(searchedText: string): void {
-    const filteredCourses = this.filterSearch.transform(this.coursesService.getList(this.page, this.displayLimit), searchedText);
-    this.courses = this.orderByName.transform(filteredCourses);
+    this.coursesService
+    .getAll({ textFragment: searchedText })
+    .pipe(
+      tap((data: any) => this.coursesService.setList(data)),
+      tap(data => {
+        this.courses = this.coursesService.getOrdered(this.page, this.displayLimit);
+      }),
+      catchError(err => of(`Error is getting course fetching: ${err}`))
+    )
+    .subscribe(console.log);
   }
 
 }

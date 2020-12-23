@@ -1,51 +1,71 @@
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { OrderByPipe } from './../../order-by.pipe';
 import { Injectable } from '@angular/core';
 import { Course } from './course.interface';
 import { mockedCourses } from './courses.mock';
 
+const httpOptions = {
+    headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+    })
+};
 @Injectable({ providedIn: 'root' })
 export class CoursesService {
     courses: Course[] = mockedCourses;
 
-    constructor(public orderByName: OrderByPipe){}
+    constructor(public orderByName: OrderByPipe, private http: HttpClient){}
 
     getList(page: number, displayLimit: number): Course[] {
         return this.courses.slice(0, page * displayLimit);
     }
 
-    // TODO
+    setList(courses: Course[]): void {
+        this.courses = courses;
+    }
+
+    getAll(options?: object): Observable<object> {
+        let url = 'http://localhost:3004/courses/';
+        if(options && Object.entries(options).length > 0) {
+            url += `?${Object.entries(options).map(item => item.join('=')).join('&')}`;
+        }
+
+        return this.http.get(url);
+    }
+    
     private getCoursesLength(): number {
         return this.courses.length;
     }
 
-    getAll(page: number, displayLimit: number): Course[] {
+    getOrdered(page: number, displayLimit: number): Course[] {
         return this.orderByName.transform(this.getList(page, displayLimit));
     }
 
-    createCourse(title: string, duration: number, description: string, topRated: boolean): Course {
+    createCourse(name: string, length: number, description: string, isTopRated: boolean): Course {
         const course = {
             id: this.getCoursesLength() + 1,
-            title,
-            dateCreation: new Date(),
-            duration,
+            name,
+            date: new Date(),
+            length,
             description,
-            topRated
+            authors: null,
+            isTopRated
         };
-        this.courses.push(course);
+        this.http.post('http://localhost:3004/courses/', course, httpOptions);
         return course;
     }
 
-    update(id: number, title: string, duration: number, description: string, topRated: boolean): Course {
+    update(id: number, name: string, length: number, description: string, isTopRated: boolean): Course {
         const course: Course = this.getItemById(id);
-        course.title = title;
-        course.duration = duration;
+        course.name = name;
+        course.length = length;
         course.description = description;
-        course.topRated = topRated;
+        course.isTopRated = isTopRated;
         return course;
     }
 
-    removeCourse(id: number): Course[] {
-        return this.courses = this.courses.filter(course => course.id !== id);
+    removeCourse(id: number): Observable<any> {
+        return this.http.delete(`http://localhost:3004/courses/${ id }`);
     }
 
     getItemById(id: number): Course {

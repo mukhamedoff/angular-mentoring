@@ -6,6 +6,7 @@ import { FirstLetterCasePipe } from './first-letter-case.pipe';
 import { CoursesModule } from './courses/courses.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,6 +16,7 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { AppRoutingModule } from './app-routing.module';
 import { McBreadcrumbsModule } from 'ngx-breadcrumbs';
 import { MainComponent } from './main/main.component';
+import { TokenInterceptor } from './shared/auth/auth.inceptor';
 
 @NgModule({
   declarations: [
@@ -33,9 +35,14 @@ import { MainComponent } from './main/main.component';
     AppRoutingModule,
     LoginPageModule,
     AddCourseModule,
+    HttpClientModule,
     McBreadcrumbsModule.forRoot()
   ],
-  providers: [FirstLetterCasePipe, AuthGuardService],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    FirstLetterCasePipe,
+    AuthGuardService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

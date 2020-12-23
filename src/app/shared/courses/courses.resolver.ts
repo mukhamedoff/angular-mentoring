@@ -17,9 +17,9 @@ export class CourseResolver implements Resolve<Course> {
         } else {
             return Promise.resolve({
                 id: 0,
-                title: 'string',
-                dateCreation: new Date(),
-                duration: 0,
+                name: 'string',
+                date: new Date(),
+                length: 0,
                 description: 'string'
             });
         }
