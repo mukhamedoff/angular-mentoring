@@ -1,7 +1,7 @@
 <div class="root">
   <app-header></app-header>
   <div class="main">
-    <div *ngIf="isLoggedIn$ | async; else loginPage">
+    <div *ngIf="!(isLogin$ | async); else loginPage">
       <app-breadcrumbs></app-breadcrumbs>
       <router-outlet></router-outlet>
     </div>

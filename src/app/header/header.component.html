@@ -6,11 +6,11 @@
                     <img class="header__logo-img" alt="Logo courses" src="/assets/img/logo.jpg">
                 </a>
             </div>
-            <div class="header__menu" *ngIf="isLoggedIn$ | async">
+            <div class="header__menu" *ngIf="!(isLogin$ | async)">
                 <a
                     [href]="link.href"
                     (click)="onAction($event, link.action)"
-                    *ngFor="let link of menu"
+                    *ngFor="let link of menuList$ | async"
                     class="header__menu-link"
                 >
                     <span *ngIf="!!link.icon" class="material-icons">{{ link.icon }}</span>

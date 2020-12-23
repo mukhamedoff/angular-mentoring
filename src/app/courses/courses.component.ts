@@ -1,9 +1,15 @@
+import { CoursesState } from './../store/courses/courses.reducers';
 import { PreloadingService } from './../shared/preloading.service';
 import { FilterSearchPipe } from './../filter-search.pipe';
 import { OrderByPipe } from './../order-by.pipe';
 import { CoursesService } from './../shared/courses/courses.service';
 import { Course } from '../shared/courses/course.interface';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { select, Store } from '@ngrx/store';
+import { selectMenuList } from '../store/menu/menu.selectors';
+import { selectCourseList } from '../store/courses/courses.selectors';
+import { ChangeCourseListAction } from '../store/courses/courses.actions';
 
 @Component({
   selector: 'app-courses',
@@ -13,6 +19,7 @@ import { Component, OnInit } from '@angular/core';
 export class CoursesComponent implements OnInit {
 
   courses: Course[] = [];
+  courses$: Observable<Array<Course>> = this.store$.pipe(select(selectCourseList));
   removingCourse: Course;
   hasMore = false;
   showRemoveCourseModal = false;
@@ -23,7 +30,8 @@ export class CoursesComponent implements OnInit {
     public coursesService: CoursesService,
     public orderByName: OrderByPipe,
     public filterSearch: FilterSearchPipe,
-    private preloadingService: PreloadingService
+    private preloadingService: PreloadingService,
+    private store$: Store<CoursesState>
   ) {
     var _this = this;
     this.coursesService.getCoursesFromServer()
@@ -31,7 +39,10 @@ export class CoursesComponent implements OnInit {
         next(data: any) {
           if (data) {
             _this.coursesService.setList(data);
-            _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+            // _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+            _this.store$.dispatch(new ChangeCourseListAction({
+              courses: _this.coursesService.getAll(_this.page, _this.displayLimit)
+            }));
           }
         },
         error(msg) {
@@ -58,7 +69,10 @@ export class CoursesComponent implements OnInit {
           next(data: any) {
             if (data) {
               _this.coursesService.setList(data);
-              _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+              // _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+              _this.store$.dispatch(new ChangeCourseListAction({
+                courses: _this.coursesService.getAll(_this.page, _this.displayLimit)
+              }));
             }
           },
           error(msg) {
@@ -86,7 +100,10 @@ export class CoursesComponent implements OnInit {
 
   onSearchSubmit(searchedText: string): void {
     const filteredCourses = this.filterSearch.transform(this.coursesService.getList(this.page, this.displayLimit), searchedText);
-    this.courses = this.orderByName.transform(filteredCourses);
+    // this.courses = this.orderByName.transform(filteredCourses);
+    this.store$.dispatch(new ChangeCourseListAction({
+      courses: this.orderByName.transform(filteredCourses)
+    }));
   }
 
   onServerSearchSubmit(searchedText: string): void {
@@ -96,7 +113,10 @@ export class CoursesComponent implements OnInit {
         next(data: any) {
           if (data) {
             _this.coursesService.setList(data);
-            _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+            // _this.courses = _this.coursesService.getAll(_this.page, _this.displayLimit);
+            _this.store$.dispatch(new ChangeCourseListAction({
+              courses: _this.coursesService.getAll(_this.page, _this.displayLimit)
+            }));
           }
         },
         error(msg) {

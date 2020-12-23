@@ -1,8 +1,11 @@
+import { AuthState } from './../../store/auth/auth.reducer';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { BrowserStorageService } from '../storage.service';
 import { HttpHeaders } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import { AuthChangeLoginStatusAction } from 'src/app/store/auth/auth.actions';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,17 +23,18 @@ export class AuthService {
 
   constructor(
     private storageService: BrowserStorageService,
-    private http: HttpClient
+    private http: HttpClient,
+    private store$: Store<AuthState>
   ) { }
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post('http://localhost:3004/auth/login/', {login: email, password}, httpOptions);
+    return this.http.post(`${ROOT_URL}login/`, {login: email, password}, httpOptions);
   }
 
   logout(): void {
     this.storageService.remove('user');
     this.storageService.remove('token');
-    this.setLoginStatus(false);
+    // this.setLoginStatus(false);
   }
 
   isAuthenticated(): boolean {
