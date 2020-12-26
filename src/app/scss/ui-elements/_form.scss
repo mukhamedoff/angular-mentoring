@@ -41,5 +41,18 @@
             height: 108px;
             resize: none;
         }
+
+        &--alert {
+            border-color: $clrRed;
+        }
+    }
+
+    &-action {
+        &__submit {
+            &--disabled {
+                pointer-events: none;
+                opacity: .5;
+            }
+        }
     }
 }

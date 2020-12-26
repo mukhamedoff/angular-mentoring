@@ -2,6 +2,7 @@ import { CoursesService } from './../../shared/courses/courses.service';
 import { DatePipe } from '@angular/common';
 import { Course } from './../../shared/courses/course.interface';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AbstractControl, FormBuilder, Validators  } from '@angular/forms';
 
 @Component({
   selector: 'app-course-form',
@@ -15,34 +16,52 @@ export class FormCourseComponent implements OnInit {
   @Output() cancel: EventEmitter<number> = new EventEmitter<number>();
   @Output() save: EventEmitter<object> = new EventEmitter<object>();
 
-  name: string;
-  description: string;
-  length: number;
-  date: string;
+  maxLengthName = 5;
+  maxLengthDescription = 5;
 
-  constructor(private datePipe: DatePipe, private courseService: CoursesService) { }
+  courseForm = this.fb.group({
+    name: ['', [Validators.required, Validators.maxLength(this.maxLengthName)]],
+    description: ['', [Validators.required, Validators.maxLength(this.maxLengthDescription)]],
+    length: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+    date: ['', Validators.required],
+    authors: [[]],
+  });
+
+  constructor(private datePipe: DatePipe, private courseService: CoursesService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     if (this.course) {
-      const { name, description, length, date } = this.course;
-      this.name = name;
-      this.description = description;
-      this.length = length;
-      this.date = this.datePipe.transform(date, 'MM/dd/yyyy');
+      const { name, description, length, date, authors } = this.course;
+      this.courseForm.patchValue({
+        name,
+        description,
+        length,
+        date,
+        authors
+      });
     }
   }
+
+  get name() { return this.courseForm.get('name'); }
+  get description() { return this.courseForm.get('description'); }
+  get length() { return this.courseForm.get('length'); }
+  get date() { return this.courseForm.get('date'); }
+  get authors() { return this.courseForm.get('authors'); }
 
   onCancel(event): void {
     this.cancel.emit(event);
   }
 
   onSave(event): void {
-    this.save.emit({
-      name: this.name,
-      description: this.description,
-      length: this.length,
-      date: this.date
-    });
+    if (!this.courseForm.invalid) {
+      this.save.emit({
+        name: this.name,
+        description: this.description,
+        length: this.length,
+        date: this.date,
+        authors: this.authors
+      });
+    }
   }
 
 }

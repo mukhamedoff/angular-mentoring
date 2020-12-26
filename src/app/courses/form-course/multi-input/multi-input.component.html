@@ -1,0 +1,20 @@
+<div class="multi-input">
+    <div class="multi-input-list">
+        <span class="multi-input-list__placeholder" *ngIf="items.length == 0">{{placeholder}}</span>
+        <div
+            class="multi-input-list__item"
+            *ngFor="let item of items"
+        >
+            <span>{{item.name}}</span>
+            <button class="multi-input-list__close" (click)="remove(item)"></button>
+        </div>
+        <input class="multi-input-list__search" type="text" #searchInput>
+    </div>
+    <div class="multi-input-suggestions" *ngIf="showSuggestions">
+        <div
+            class="multi-input-suggestions__item"
+            *ngFor="let suggest of suggestions"
+            (click)="add(suggest)"
+        >{{suggest.name}}</div>
+    </div>
+</div>
