@@ -26,18 +26,35 @@ button {
     }
 }
 
-.mw-150 {
+.mxw-150 {
     max-width: 150px;
 }
 
-.mw-320 {
+.mxw-320 {
     max-width: 320px;
 }
 
-.ml-5{
+.w-45p {
+    width: 45%;
+}
+
+.mgl-5{
     margin-left: 5px;
 }
 
-.ml-10{
+.mgl-10{
     margin-left: 10px;
+}
+
+.alert {
+    font-size: 11px;
+
+    &--danger {
+        color: $clrRed
+    }
+}
+
+.col-2 {
+    display: flex;
+    justify-content: space-between;
 }

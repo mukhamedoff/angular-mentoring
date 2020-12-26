@@ -1,16 +1,25 @@
-<form action="" class="form course-form">
+<form action="" class="form course-form" [formGroup]="courseForm">
     <div class="form-group">
         <label for="input-title" class="form-label">
             <span class="form-label__text">Title:</span>
             <span class="form-label__required">*required</span>
         </label>
         <input
-            [(ngModel)]="name"
+            formControlName="name"
             name="title"
             id="input-title"
             type="text"
             class="form__input form__input--text"
+            [class.form__input--alert]="name.invalid && (name.dirty || name.touched)"
             placeholder="Text input">
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert--danger">
+            <div *ngIf="name.errors.required">
+                Name is required.
+            </div>
+            <div *ngIf="name.errors.maxlength">
+                Name must not to be longer {{maxLengthName}} characters.
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <label for="textarea-description" class="form-label">
@@ -18,47 +27,66 @@
             <span class="form-label__required">*required</span>
         </label>
         <textarea
-            [(ngModel)]="description"
+            formControlName="description"
             name="description"
             id="textarea-description"
             class="form__input form__input--textarea"
+            [class.form__input--alert]="description.invalid && (description.dirty || description.touched)"
             placeholder="Add description"></textarea>
+        <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert--danger">
+            <div *ngIf="description.errors.required">
+                Description is required.
+            </div>
+            <div *ngIf="description.errors.maxlength">
+                Description must not to be longer {{maxLengthDescription}} characters.
+            </div>
+        </div>
     </div>
-    <div class="form-group mw-150">
-        <label for="input-duration" class="form-label">
-            <span class="form-label__text">Duration:</span>
-            <span class="form-label__required">*required</span>
-        </label>
-        <input
-            [(ngModel)]="length"
-            name="duration"
-            id="input-duration"
-            type="text"
-            class="form__input form__input--text"
-            placeholder="minutes">
+    <div class="col-2">
+        <div class="form-group w-45p">
+            <label for="input-duration" class="form-label">
+                <span class="form-label__text">Duration:</span>
+                <span class="form-label__required">*required</span>
+            </label>
+            <input
+                formControlName="length"
+                name="duration"
+                id="input-duration"
+                type="text"
+                class="form__input form__input--text"
+                [class.form__input--alert]="length.invalid && (length.dirty || length.touched)"
+                placeholder="minutes">
+
+            <div *ngIf="length.invalid && (length.dirty || length.touched)" class="alert alert--danger">
+                <div *ngIf="length.errors.required">
+                    Length is required.
+                </div>
+                <div *ngIf="length.errors.pattern">
+                    Only numbers are allowed.
+                </div>
+            </div>
+        </div>
+        <div class="form-group w-45p">
+            <label for="input-date" class="form-label">
+                <span class="form-label__text">Date:</span>
+                <span class="form-label__required">*required</span>
+            </label>
+            <input
+                formControlName="date"
+                name="dateCreation"
+                id="input-date"
+                type="text"
+                class="form__input form__input--text"
+                placeholder="MM/DD/YYYY">
+        </div>
     </div>
-    <div class="form-group mw-150">
-        <label for="input-date" class="form-label">
-            <span class="form-label__text">Date:</span>
-            <span class="form-label__required">*required</span>
-        </label>
-        <input
-            [(ngModel)]="date"
-            name="dateCreation"
-            id="input-date"
-            type="text"
-            class="form__input form__input--text"
-            placeholder="MM/DD/YYYY">
-    </div>
-    <div class="form-group mw-320">
-        <label for="input-authors" class="form-label">
-            <span class="form-label__text">Authors:</span>
-            <span class="form-label__required">*required</span>
-        </label>
-        <input id="input-authors" type="text" class="form__input form__input--text" placeholder="Start typing">
-    </div>
+    <app-multi-input formControlName="authors"></app-multi-input>
     <div class="form-action course__action">
         <button (click)="onCancel($event)" class="btn btn--big btn--gray">Cancel</button>
-        <button (click)="onSave($event)" class="btn btn--big ml-10">Save</button>
+        <button
+            (click)="onSave($event)"
+            class="btn btn--big mgl-10 form-action__submit"
+            [class.form-action__submit--disabled]="courseForm.invalid"
+        >Save</button>
     </div>
 </form>

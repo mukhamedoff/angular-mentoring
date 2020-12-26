@@ -25,6 +25,7 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { AppEffects } from './app.effects';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AppEffects } from './app.effects';
     LoginPageModule,
     AddCourseModule,
     HttpClientModule,
+    ReactiveFormsModule,
     McBreadcrumbsModule.forRoot(),
     StoreModule.forRoot(reducers, {
       metaReducers,
