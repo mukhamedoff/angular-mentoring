@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { MenuState } from './../store/menu/menu.reducers';
 import { Menu } from './../shared/menu/menu.interface';
 import { AuthChangeLoginStatusAction } from './../store/auth/auth.actions';
@@ -9,11 +10,12 @@ import { AuthService } from '../shared/auth/auth.service';
 import { MenuService } from './../shared/menu/menu.services';
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { selectMenuList } from '../store/menu/menu.selectors';
 import { ChangeMenuListAction } from '../store/menu/menu.actions';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -25,6 +27,9 @@ export class HeaderComponent implements OnInit {
   isLoggedIn$: Observable<boolean> = this.authService.loginStatusObs;
   isLogin$: Observable<boolean> = this.store$.pipe(select(selectIsLogin));
   menuList$: Observable<Array<Menu>> = this.store$.pipe(select(selectMenuList));
+  languages = environment.locales;
+  currentLang = 'en';
+  showLangs = false;
 
   constructor(
     public menuService: MenuService,
@@ -32,13 +37,20 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     private preloadingService: PreloadingService,
     private router: Router,
-    private store$: Store<AuthState | MenuState>
+    private store$: Store<AuthState | MenuState>,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {    
     if (this.authService.isAuthenticated()) {
       this.getUserInfo();
     }
+    this.currentLang = this.translateService.currentLang;
+
+    this.translateService.onLangChange
+      .subscribe((event: LangChangeEvent) => {
+        this.currentLang = event.lang;
+      });
   }
 
   onAction(event, action: string): void {
@@ -81,6 +93,14 @@ export class HeaderComponent implements OnInit {
       menuList: this.menuService.getMenu(false)
     }));
     this.router.navigateByUrl('/');
+  }
+
+  toggleLangs(): void {
+    this.showLangs = !this.showLangs;
+  }
+
+  changeLang(lang: string): void {
+    this.translateService.use(lang);
   }
 
 }

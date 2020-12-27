@@ -10,6 +10,7 @@ import { OrderByPipe } from '../order-by.pipe';
 import { FilterSearchPipe } from '../filter-search.pipe';
 import { CourseDeleteModalComponent } from './../modals/courses/course-removing/course-removing.component';
 import { CreationdatestatusDirective } from './../creationdatestatus.directive';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { CreationdatestatusDirective } from './../creationdatestatus.directive';
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    TranslateModule
   ],
   providers: [
     OrderByPipe,

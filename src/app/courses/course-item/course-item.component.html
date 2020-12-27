@@ -18,8 +18,8 @@
     <div class="course-item__body">
         <div class="course-item__description">{{ course.description }}</div>
         <div class="course-item__actions">
-            <button [routerLink]="['/courses', course.id]" class="btn course-item__actions--edit icon-item"><span class="material-icons">edit</span>Edit</button>
-            <button (click)="onDeleteItem()" class="btn course-item__actions--delete icon-item"><span class="material-icons">delete</span>Delete</button>
+            <button [routerLink]="['/courses', course.id]" class="btn course-item__actions--edit icon-item"><span class="material-icons">edit</span>{{'BUTTONS.EDIT' | translate}}</button>
+            <button (click)="onDeleteItem()" class="btn course-item__actions--delete icon-item"><span class="material-icons">delete</span>{{'BUTTONS.DELETE' | translate}}</button>
         </div>
     </div>
     

@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  locales: ['en', 'ua'],
+  defaultLocale: 'en',
 };
 export const ROOT_URL = 'http://localhost:3004/';
 /*
