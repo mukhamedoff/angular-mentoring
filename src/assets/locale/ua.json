@@ -1,0 +1,43 @@
+{
+    "LANGUAGES": {
+        "en": "EN",
+        "ua": "UA"
+    },
+    "GLOBAL": {
+        "REQUIRED": "обов'язково"
+    },
+    "PAGES": {
+        "MAIN": {
+            "WELCOME": "Вітаю на платформі відеокурсів"
+        }
+    },
+    "BUTTONS": {
+        "GO_TO_COURSES": "Гайда до курсів",
+        "ADD_COURSE": "Додати курс",
+        "DELETE": "Видалити",
+        "CONFIRM_DELETE": "Так, видалити!",
+        "EDIT": "Редагувати",
+        "LOAD_MORE": "Хочу ще",
+        "CANCEL": "Відмінити",
+        "SAVE": "Зберегти"
+    },
+    "MENU": {
+        "LOG_IN": "Увійти",
+        "LOG_OUT": "Вийти",
+        "REGISTRATION": "Зарегіструватися"
+    },
+    "PLACEHOLDERS": {
+        "TEXT_INPUT": "Трохи тексту",
+        "ADD_DESCRIPTION": "Додай опису",
+        "MINUTES": "Хвилинки",
+        "TYPE_TO_SEARCH": "Тицяй для пошуку",
+        "TYPE_TO_FIND": "Тицяй, щоб знайти"
+    },
+    "LABELS": {
+        "TITLE": "Заголовок",
+        "DESCRIPTION": "Опис",
+        "DURATION": "Тривалість",
+        "DATE": "Дата",
+        "AUTHORS": "Автори"
+    }
+}

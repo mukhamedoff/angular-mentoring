@@ -3,7 +3,10 @@
     <div class="container">
         <app-search (searchSubmit)="onSearchSubmit($event)"></app-search>
         <div class="courses__add-new">
-            <a routerLink="new" class="btn btn--big icon-item"><span class="material-icons">add_circle_outline</span> Add course</a>
+            <a routerLink="new" class="btn btn--big icon-item">
+                <span class="material-icons">add_circle_outline</span>
+                {{'BUTTONS.ADD_COURSE' | translate}}
+            </a>
         </div>
         <div class="courses__list" *ngIf="(courses$ | async).length; else coursesEmpty">
             <app-course-item 
@@ -11,7 +14,7 @@
                 (deleteCourse)="onDelete($event)"
                 [course]="course"></app-course-item>
                 <div class="courses__more" *ngIf="hasMore">
-                    <button (click)="onLoadMore()" class="btn btn--link">Load more</button>
+                    <button (click)="onLoadMore()" class="btn btn--link">{{'BUTTONS.LOAD_MORE' | translate}}</button>
                 </div>
         </div>
         <ng-template #coursesEmpty>

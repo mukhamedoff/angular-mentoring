@@ -1,8 +1,8 @@
 <form action="" class="form course-form" [formGroup]="courseForm">
     <div class="form-group">
         <label for="input-title" class="form-label">
-            <span class="form-label__text">Title:</span>
-            <span class="form-label__required">*required</span>
+            <span class="form-label__text">{{'LABELS.TITLE' | translate}}:</span>
+            <span class="form-label__required">*{{'GLOBAL.REQUIRED' | translate}}</span>
         </label>
         <input
             formControlName="name"
@@ -11,7 +11,7 @@
             type="text"
             class="form__input form__input--text"
             [class.form__input--alert]="name.invalid && (name.dirty || name.touched)"
-            placeholder="Text input">
+            [placeholder]="('PLACEHOLDERS.TEXT_INPUT' | translate)">
         <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert--danger">
             <div *ngIf="name.errors.required">
                 Name is required.
@@ -23,8 +23,8 @@
     </div>
     <div class="form-group">
         <label for="textarea-description" class="form-label">
-            <span class="form-label__text">Description:</span>
-            <span class="form-label__required">*required</span>
+            <span class="form-label__text">{{'LABELS.DESCRIPTION' | translate}}:</span>
+            <span class="form-label__required">*{{'GLOBAL.REQUIRED' | translate}}</span>
         </label>
         <textarea
             formControlName="description"
@@ -32,7 +32,7 @@
             id="textarea-description"
             class="form__input form__input--textarea"
             [class.form__input--alert]="description.invalid && (description.dirty || description.touched)"
-            placeholder="Add description"></textarea>
+            [placeholder]="('PLACEHOLDERS.ADD_DESCRIPTION' | translate)"></textarea>
         <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert--danger">
             <div *ngIf="description.errors.required">
                 Description is required.
@@ -45,8 +45,8 @@
     <div class="col-2">
         <div class="form-group w-45p">
             <label for="input-duration" class="form-label">
-                <span class="form-label__text">Duration:</span>
-                <span class="form-label__required">*required</span>
+                <span class="form-label__text">{{'LABELS.DURATION' | translate}}:</span>
+                <span class="form-label__required">*{{'GLOBAL.REQUIRED' | translate}}</span>
             </label>
             <input
                 formControlName="length"
@@ -55,7 +55,7 @@
                 type="text"
                 class="form__input form__input--text"
                 [class.form__input--alert]="length.invalid && (length.dirty || length.touched)"
-                placeholder="minutes">
+                [placeholder]="('PLACEHOLDERS.MINUTES' | translate)">
 
             <div *ngIf="length.invalid && (length.dirty || length.touched)" class="alert alert--danger">
                 <div *ngIf="length.errors.required">
@@ -68,8 +68,8 @@
         </div>
         <div class="form-group w-45p">
             <label for="input-date" class="form-label">
-                <span class="form-label__text">Date:</span>
-                <span class="form-label__required">*required</span>
+                <span class="form-label__text">{{'LABELS.DATE' | translate}}:</span>
+                <span class="form-label__required">*{{'GLOBAL.REQUIRED' | translate}}</span>
             </label>
             <input
                 formControlName="date"
@@ -80,13 +80,19 @@
                 placeholder="MM/DD/YYYY">
         </div>
     </div>
-    <app-multi-input formControlName="authors"></app-multi-input>
+    <div class="form-group">
+        <label for="textarea-description" class="form-label">
+            <span class="form-label__text">{{'LABELS.AUTHORS' | translate}}:</span>
+            <span class="form-label__required">*{{'GLOBAL.REQUIRED' | translate}}</span>
+        </label>
+        <app-multi-input formControlName="authors"></app-multi-input>
+    </div>
     <div class="form-action course__action">
-        <button (click)="onCancel($event)" class="btn btn--big btn--gray">Cancel</button>
+        <button (click)="onCancel($event)" class="btn btn--big btn--gray">{{'BUTTONS.CANCEL' | translate}}</button>
         <button
             (click)="onSave($event)"
             class="btn btn--big mgl-10 form-action__submit"
             [class.form-action__submit--disabled]="courseForm.invalid"
-        >Save</button>
+        >{{'BUTTONS.SAVE' | translate}}</button>
     </div>
 </form>

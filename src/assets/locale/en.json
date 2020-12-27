@@ -1,0 +1,43 @@
+{
+    "LANGUAGES": {
+        "en": "EN",
+        "ua": "UA"
+    },
+    "GLOBAL": {
+        "REQUIRED": "required"
+    },
+    "PAGES": {
+        "MAIN": {
+            "WELCOME": "Welcome to courses translate"
+        }
+    },
+    "BUTTONS": {
+        "GO_TO_COURSES": "Go to courses",
+        "ADD_COURSE": "Add course",
+        "DELETE": "Delete",
+        "CONFIRM_DELETE": "Yes, delete!",
+        "EDIT": "Edit",
+        "LOAD_MORE": "Load more",
+        "CANCEL": "Cancel",
+        "SAVE": "Save"
+    },
+    "MENU": {
+        "LOG_IN": "Log in",
+        "LOG_OUT": "Log out",
+        "REGISTRATION": "Register"
+    },
+    "PLACEHOLDERS": {
+        "TEXT_INPUT": "Text input",
+        "ADD_DESCRIPTION": "Add description",
+        "MINUTES": "Minutes",
+        "TYPE_TO_SEARCH": "Type to search",
+        "TYPE_TO_FIND": "Type to find"
+    },
+    "LABELS": {
+        "TITLE": "Title",
+        "DESCRIPTION": "Description",
+        "DURATION": "Duration",
+        "DATE": "Date",
+        "AUTHORS": "Authors"
+    }
+}
