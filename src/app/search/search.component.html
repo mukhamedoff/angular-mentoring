@@ -1,0 +1,12 @@
+<div class="search">
+    <label for="search-input">
+        <input
+            #searchInput
+            [(ngModel)]="searchText"
+            id="search-input"
+            class="search__input"
+            type="text"
+            [placeholder]="('PLACEHOLDERS.TYPE_TO_SEARCH' | translate)">
+    </label>
+    <button (click)="onSearch()" class="btn btn--big btn--green" *ngIf="showButton">Search</button>
+</div>

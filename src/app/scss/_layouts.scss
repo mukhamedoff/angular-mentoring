@@ -1,0 +1,15 @@
+.container {
+    box-sizing: border-box;
+    margin: 0 auto;
+    max-width: $desktopWidth;
+    width: 100%;
+    padding: 0 $p-x-30;
+
+    @media screen and (min-width: $small) and (max-width: $medium) {
+        padding: 0 $p-x-20;
+    }
+
+    @media screen and (max-width: $small) {
+        padding: 0 $p-x-10;
+    }
+}

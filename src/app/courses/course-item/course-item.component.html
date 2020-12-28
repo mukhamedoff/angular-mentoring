@@ -1,0 +1,26 @@
+<div class="course-item"
+    [appCreationdatestatus]="course.date"
+    [ngClass]="{'course-item--rated': course.isTopRated}">
+
+    <div class="course-item__head">
+        <h2 class="course-item__title">{{ course.name | uppercase }} <span class="material-icons course-item__rate" *ngIf="course.isTopRated">star_rate</span></h2>
+        <div class="course-item__details">
+            <div class="course-item__duration icon-item">
+                <span class="material-icons">schedule</span>
+                {{ course.length | duration}}
+            </div>
+            <div class="course-item__creation icon-item">
+                <span class="material-icons">calendar_today</span>
+                {{ course.date | date:'MM/dd/yyyy' }}
+            </div>
+        </div>
+    </div>
+    <div class="course-item__body">
+        <div class="course-item__description">{{ course.description }}</div>
+        <div class="course-item__actions">
+            <button [routerLink]="['/courses', course.id]" class="btn course-item__actions--edit icon-item"><span class="material-icons">edit</span>{{'BUTTONS.EDIT' | translate}}</button>
+            <button (click)="onDeleteItem()" class="btn course-item__actions--delete icon-item"><span class="material-icons">delete</span>{{'BUTTONS.DELETE' | translate}}</button>
+        </div>
+    </div>
+    
+</div>

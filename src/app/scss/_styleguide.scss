@@ -1,0 +1,60 @@
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+h1,h2,h3,h4,h5,h6,p,ul {
+    margin: 0;
+}
+button {
+    outline: none;
+    cursor: pointer;
+    border: 0;
+}
+
+.h-100p {
+    height: 100%;
+}
+
+.material-icons {
+    font-size: 18px;
+}
+
+.icon-item {
+    display: flex;
+    align-items: center;
+
+    .material-icons {
+        margin-right: 8px;
+    }
+}
+
+.mxw-150 {
+    max-width: 150px;
+}
+
+.mxw-320 {
+    max-width: 320px;
+}
+
+.w-45p {
+    width: 45%;
+}
+
+.mgl-5{
+    margin-left: 5px;
+}
+
+.mgl-10{
+    margin-left: 10px;
+}
+
+.alert {
+    font-size: 11px;
+
+    &--danger {
+        color: $clrRed
+    }
+}
+
+.col-2 {
+    display: flex;
+    justify-content: space-between;
+}

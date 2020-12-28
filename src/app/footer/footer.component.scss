@@ -1,0 +1,14 @@
+@import '../scss/main';
+
+.footer {
+    background-color: $bgBlack;
+    color: $clrWhite;
+    height: $heightFooter;
+    display: flex;
+    align-items: center;
+
+    &__text {
+        text-align: right;
+        width: 100%;
+    }
+}

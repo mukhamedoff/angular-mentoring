@@ -1,0 +1,18 @@
+<div class="modal">
+    <div class="modal__background"></div>
+    <div class="modal-body">
+        <div class="modal-wrap">
+            <div class="modal-body__title">
+                <h2 class="modal-body__title-text">Delete course?</h2>
+                <button (click)="onCancel()" class="modal__close"><span class="material-icons">close</span></button>
+            </div>
+            <div class="modal-body__content">
+                <p>Are you sore you want delete<br> Video Course {{removingCourse.id}}</p>
+            </div>
+            <div class="modal-body-actions">
+                <button (click)="onCancel()" class="btn btn--big btn--white modal-body-actions__cancel">{{'BUTTONS.CANCEL' | translate}}</button>
+                <button (click)="onConfirmDelete()" class="btn btn--big btn--green modal-body-actions__delete">{{'BUTTONS.CONFIRM_DELETE' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

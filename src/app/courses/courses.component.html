@@ -1,0 +1,30 @@
+<router-outlet></router-outlet>
+<div class="courses">
+    <div class="container">
+        <app-search (searchSubmit)="onSearchSubmit($event)"></app-search>
+        <div class="courses__add-new">
+            <a routerLink="new" class="btn btn--big icon-item">
+                <span class="material-icons">add_circle_outline</span>
+                {{'BUTTONS.ADD_COURSE' | translate}}
+            </a>
+        </div>
+        <div class="courses__list" *ngIf="(courses$ | async).length; else coursesEmpty">
+            <app-course-item 
+                *ngFor="let course of courses$ | async"
+                (deleteCourse)="onDelete($event)"
+                [course]="course"></app-course-item>
+                <div class="courses__more" *ngIf="hasMore">
+                    <button (click)="onLoadMore()" class="btn btn--link">{{'BUTTONS.LOAD_MORE' | translate}}</button>
+                </div>
+        </div>
+        <ng-template #coursesEmpty>
+            <div class="courses__empty">The courses array is empty.</div>
+        </ng-template>
+    </div>
+</div>
+<app-course-removing 
+    *ngIf="showRemoveCourseModal"
+    [removingCourse]="removingCourse"
+    (confirmDelete)="onDelete()"
+    (cancelDelete)="onCancel()">
+</app-course-removing>

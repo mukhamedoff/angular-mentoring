@@ -1,0 +1,68 @@
+@import '../../scss/main';
+
+.course-item {
+    border-radius: 6px;
+    background: $bgWhite;
+    box-shadow: 0 1px 2px 0 rgba(29,30,38,0.10), 0 2px 10px 0 rgba(29,30,38,0.15);
+    box-sizing: border-box;
+    padding: 24px;
+    margin-bottom: 24px;
+
+    &--rated{
+        background-color: #ffcb001c;
+    }
+
+    &__head {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    &__title {
+        color: $clrBlack2;
+        font-size: 24px;
+        text-transform: none;
+        font-weight: 600;
+        flex: 1;
+    }
+
+    &__rate{
+        color: #ffcb00;
+    }
+
+    &__details {
+        line-height: 18px;
+        letter-spacing: 0;
+        color: $clrGray;
+        font-size: 14px;
+    }
+
+    &__description{
+        line-height: 18px;
+        letter-spacing: 0;
+        color: $clrBlack;
+        font-size: 14px;
+        flex: 1;
+    }
+
+    &__body{
+        display: flex;
+    }
+
+    &__actions {
+        padding-left: 30px;
+        display: flex;
+        align-items: flex-start;
+
+        &--delete {
+            margin-left: 10px;
+        }
+    }
+
+    &__details {
+        display: flex;
+    }
+
+    &__creation{
+        margin-left: 24px;
+    }
+}

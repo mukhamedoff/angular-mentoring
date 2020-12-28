@@ -1,0 +1,38 @@
+<div class="header">
+    <div class="container h-100p">
+        <div class="header__wrap h-100p">
+            <div class="header__logo">
+                <a href="/" class="header__logo-link">
+                    <img class="header__logo-img" alt="Logo courses" src="/assets/img/logo.jpg">
+                </a>
+            </div>
+            <div class="header-langs">
+                <div class="header-langs__current" (click)="toggleLangs()">
+                    <span style="font-size: 12px;" class="material-icons">language</span>
+                    {{currentLang | uppercase}}
+                    <span class="material-icons" *ngIf="!showLangs; else arrowUp">keyboard_arrow_down</span>
+                    <ng-template #arrowUp><span class="material-icons" #arrowUp>keyboard_arrow_up</span></ng-template>
+                </div>
+                <ul class="header-langs-list" *ngIf="showLangs">
+                    <li
+                        class="header-langs-list__item"
+                        *ngFor="let language of languages"
+                        (click)="changeLang(language)"
+                        [class.header-langs-list__item--current]="language == currentLang"
+                    >{{ 'LANGUAGES.' + language | translate }}</li>
+                </ul>
+            </div>
+            <div class="header__menu" *ngIf="!(isLogin$ | async)">
+                <a
+                    [href]="link.href"
+                    (click)="onAction($event, link.action)"
+                    *ngFor="let link of menuList$ | async"
+                    class="header__menu-link"
+                >
+                    <span *ngIf="!!link.icon" class="material-icons">{{ link.icon }}</span>
+                    <span class="header__menu-link-text">{{ link.title | translate }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

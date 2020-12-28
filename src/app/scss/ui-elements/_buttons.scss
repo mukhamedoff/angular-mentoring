@@ -1,0 +1,52 @@
+.btn {
+    border-radius: 3px;
+    line-height: 12px;
+    letter-spacing: -0.1px;
+    color: $clrWhite;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: $bgBlue;
+    padding: 6px 12px;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    &--big {
+        line-height: 24px;
+        font-size: 14px;
+    }
+
+    &--green {
+        background-color: $bgGreen;
+    }
+
+    &--white {
+        background-color: $bgWhite;
+        color: $clrBlack;
+        border: 1px solid #ACAFBF;
+    }
+
+    &--gray {
+        background: rgba(18,21,35,0.20);
+        color: $clrBlack;
+    }
+
+    &--link {
+        line-height: 24px;
+        letter-spacing: 0;
+        color: #5681EE;
+        font-size: 12px;
+        text-decoration: single;
+        background-color: transparent;
+        text-decoration: underline;
+    }
+
+    &--disabled {
+        pointer-events: none;
+        background: #E1E3EB;
+        color: #A8A9B4;
+    }
+}

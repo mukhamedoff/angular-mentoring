@@ -1,0 +1,12 @@
+@import '../scss/main';
+
+.not-founded{
+    &__title {
+        font-size: 100px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    &__back {
+        text-align: center;
+    }
+}

@@ -1,0 +1,58 @@
+.form {
+    &-group {
+        margin-bottom: 20px;
+    }
+
+    &-label {
+        display: flex;
+        align-items: center;
+        line-height: 24px;
+        letter-spacing: 0;
+        color: #474A59;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 5px;
+
+        &__text{
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        &__required {
+            font-size: 12px;
+        }
+    }
+
+    &__input{
+        width: 100%;
+        border-radius: 3px;
+        border: 1px solid #CED0DB;
+        background: #FFFFFF;
+        box-sizing: border-box;
+        line-height: 18px;
+        letter-spacing: 0;
+        color: #474A59;
+        font-size: 14px;
+        padding: 9px 12px;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+
+        &--textarea {
+            height: 108px;
+            resize: none;
+        }
+
+        &--alert {
+            border-color: $clrRed;
+        }
+    }
+
+    &-action {
+        &__submit {
+            &--disabled {
+                pointer-events: none;
+                opacity: .5;
+            }
+        }
+    }
+}
